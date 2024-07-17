@@ -4,6 +4,7 @@
 | ---------- | -------------------------------------------- |
 | Author     | @blueoc-phucpham                             |
 | Timebox    | 7 days                                       |
+| Start date | 17/07/2024                                   |
 
 - [Spike Document](#spike-document)
   - [Context](#context)
@@ -36,7 +37,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 **Knowledge Gap**:
 
 - The developer has never written frontend unit tests before.
-- Clarifying requirements from user stories is difficult.
+- Clarifying requirements from user stories is challenging.
 
 **Skill Gap**:
 
@@ -71,33 +72,33 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 #### User signup
 
-5. How much personal information is needed beyond name, email, and password? Should we include full name, avatar, and bio?
+7. How much personal information is needed beyond name, email, and password? Should we include full name, avatar, and bio?
 
-6. Can one email address be used to create multiple accounts?
+8. Can one email address be used to create multiple accounts?
 
-7. Are there any specific password rules for security, like requiring at least one capital letter, one lowercase letter, a number, and a symbol?
+9. Are there any specific password rules for security, like requiring at least one capital letter, one lowercase letter, a number, and a symbol?
 
 #### User login
 
-8. What happens if users forget their password?
+10. What happens if users forget their password?
 
 #### Role & Permission Management
 
-9. Access control rules is per document (like google docs) or system wide?
+11. Access control rules is per document (like google docs) or system wide?
 
 #### User create note
 
-10. Can note contain images?
-11. Can users share their note to other user?
+12. Can note contain images?
+13. Can users share their note to other user?
 
 #### User Edit Note
 
-12. Note version history support?
-13. Can multiple user edit the same note?
+14. Note version history support?
+15. Can multiple user edit the same note?
 
 #### User Delete note
 
-14. Is the note really deleted or should be kept in database (soft-delete)?
+16. Is the note really deleted or should be kept in database (soft-delete)?
 
 ## Estimate
 
@@ -105,7 +106,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 ### Baseline
 
-- [ ] Design preliminary database schema (1 point)
+- [ ] [Design preliminary database schema](./tasks/note-1.md) (1 point)
 
 - [ ] Identify and list API endpoints (1 point)
 
@@ -128,7 +129,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 - [ ] Write unit tests for sign-up API (1 point)
 
-- [ ] Design confirmation email (2 points)
+- [ ] Design signup confirmation email (2 points)
 
 - [ ] Implement email service to send signup confirmation email (1 point)
 
@@ -144,9 +145,12 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 - [ ] Write unit tests for login UI (1 point)
 
-- [ ] Write API login endpoints and user session management (1 points)
+- [ ] Write API login endpoint(1 points)
+
+- [ ] Implement Logout and JWT token invalidate (1 point)
 
 - [ ] Write unit tests for login API (1 point)
+
 
 
 ### User Story: Create Note
@@ -175,7 +179,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 ### User Story: Delete Note
 
-- [ ] Create Note Delete UI (Button & Confirm Dialog)
+- [ ] Create Note Delete UI (Button & Confirm Dialog) (2 point)
 
 - [ ] Write unit tests for note deletion (1 point)
 
@@ -196,7 +200,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 - [ ] Implement Role Delete Confirmation Dialog (2 points)
 
-- [ ] Implement Role Assign User Form (2 points)
+- [ ] Implement Role Assign User Form (1 points)
 
 - [ ] Revise note CRUD API to add role-based access control (2 points)
 

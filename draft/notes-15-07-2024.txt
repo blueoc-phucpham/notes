@@ -34,3 +34,10 @@ Ví dụ User Story: Sign Up, ở phần gửi mail xác thực, em đã từng 
     - Em tập trung làm rõ requirement trước, vì em sẽ phải đưa ra estimate. Để phục vụ việc solution có chạy đc ko, em có thể làm 1 cái POC nhỏ để thử. Nhưng mình không code ngay
 3. Về phần technical:
     -Em đưa ra tất cả các phương án mà em đã tính tới (ưu + nhược điểm). Em chọn phương án nào thì sẽ cần convince được mọi người
+
+Hi mọi người, em có viết 1 bản tài liệu cho Training Program, làm một cái web take note.
+Em đã lên danh sách các task cần làm, mỗi task sẽ có thêm 1 file mô tả chi tiết yêu cầu của task như task design database (/docs/task/note-1.md)
+Hiện tại em muốn làm rõ một số requirement (Như em đã note ở phần Unresolved Questions) cũng như xin ý kiến của anh/chị về phần chia task trước khi viết mô tả chi tiết cho từng task.
+Xin góp ý của mọi người về cách break task và cách đặt các câu hỏi làm rõ requirement ạ
+
+https://github.com/blueoc-phucpham/notes/blob/main/docs/index.md

@@ -3,14 +3,14 @@
 
 ### Description
 
-Design a base database schema to satisfy [user stories](../../README.md#user-stories) and act as a base for other task. Postgresql advantages should be consider when design tables, contraints...
-
+Design a base database schema to satisfy [user stories](../../README.md#user-stories) and act as a base for other task.
 ### Objectives
 
-- A relational database schema (prefered in diagram, included in `docs/schemas`) and a postgres sql script to create schema
+- The schema shoud at least sastify Third Normal Form(3NF)
 
-- The schema shoud at least sastify Third Normal Form(3NF), any violation (denormalization) must be documented with a good reason.
+- Additional indexes should be consisdered for performance reason
 
+- Postgresql advantages should be consider when design tables, contraints...
 
 ### Dependencies
 
@@ -18,9 +18,8 @@ None
 
 ### Acceptance Criteria
 
-- The schema should consisder domain contraints
-
-- The schema shoud at least sastify Third Normal Form(3NF), any violation (denormalization) must be documented with a good reason.
+- A database schema diagram should be created under `docs/schemas/`
+- A `setup.sql` script to init the database should be created under `docs/schemas/`. This script should run successfully under postgres-15 
 
 ### Estimated Effort
 
