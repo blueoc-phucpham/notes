@@ -21,7 +21,7 @@
       - [User Delete note](#user-delete-note)
   - [Estimate](#estimate)
     - [Baseline](#baseline)
-    - [User Story: Sign Up](#user-story-sign-up)
+    - [User Signup](#user-signup-1)
     - [User Story: Login](#user-story-login)
     - [User Story: Create Note](#user-story-create-note)
     - [User Story: Edit Note](#user-story-edit-note)
@@ -38,6 +38,8 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 - The developer has never written frontend unit tests before.
 - Clarifying requirements from user stories is challenging.
+- Try to break tasks from user stories make tasks not strongly attached.
+    > For example to implement sign up, I have to design the web page, write some frontend code, than write backend code, then testing. Context-switching between various type of task might be inefficient
 
 **Skill Gap**:
 
@@ -60,13 +62,16 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 ### Common
 
 1. What metrics or criteria should we use to evaluate our test suite's effectiveness?
-2. Should user data be encrypted both at rest and in transit? If so, what encryption standards should we use?
-3. How do we create an admin account? Are there limits on the number of admin accounts?
-4. Can admin view/update/delete user's notes? Or deactivate user account?
+2. Should all user data be encrypted in the database?
 
-5. Does the design support mobile (responsive) functionality across different screen sizes? If not, what changes are needed?
+4. How do we create an admin account? Are there limits on the number of admin accounts?
+5. Can admin view/update/delete user's notes? Or deactivate user account? Can admin view all user's infomation?
 
-6. Is there a limit on how much note user can save? What should be done if one user spam very long note?
+6. Does the design support mobile (responsive) functionality across different screen sizes? If not, what changes are needed?
+
+7. Is there a limit on how much note user can save? What should be done if one user spam very long note?
+
+8. Is note searching and categorizing is needed?
 
 ### Requirement
 
@@ -106,108 +111,250 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 ### Baseline
 
-- [ ] [Design preliminary database schema](./tasks/note-1.md) (1 point)
-
-- [ ] [Identify and list API endpoints](./tasks/note-2.md) (1 point)
-
-- [ ] Identify and list app screens and their purposes (2 points)
-
-- [ ] Find similar apps to get UI inspiration (0.5 point)
-
-- [ ] Find appropriate library for implementing common task (sign up, login, role-based control) (0.5 point)
+- [ ] **Design preliminary database schema**
+  - **Description:** Develop the basic structure database schemas to following user stories. The schemas may be revised or update as the requirement clarified further.
+  - **Estimation:** 4 hours
+  - **Output**: An Entity Relationship Diagram, A relational diagram and a Postgres DDL script
 
 
-### User Story: Sign Up
+- [ ] Identify and list API endpoints
+  - **Description:** Design the restful api spec. The spec must indicate the route, method, query param, request body, response body if needed.
+  - **Estimation:** 2 hours
+  - **Output**: A OpenAPI spec listing every api route in the app
 
-- [ ] Design sign up page (1 point)
+- [ ] Research appropriate library for implementing common task (sign up, login, role-based control)
+  - **Description:** Research common library and best practice in handling common task and feature using django and react. Like login, signup, role-based access control
+  - **Estimation:** 2 hours
+  - **Output**: A comparision document of libraries pros and cons and developer's recommended choice
 
-- [ ] Implement Sign Up Form UI and client-side validation (2 points)
-
-- [ ] Write unit tests for sign-up form (1 point)
-
-- [ ] Write API sign-up endpoint and server-side validation (1 point)
-
-- [ ] Write unit tests for sign-up API (1 point)
-
-- [ ] Design signup confirmation email (2 points)
-
-- [ ] Implement email service to send signup confirmation email (1 point)
-
-- [ ] Write unittest for mail sending service (1 point)
+- [ ] Note taking app design on Figma Community Website
+  - **Description:** Find a available design on figma or dripble, or get some idea from popular note taking app 
+  - **Estimation:** 4 hours
+  - **Output**: A figma design document with required screens to build app UI
 
 
+### User Signup
+
+1. **Frontend**
+    - [ ] **Create Signup Page Component**
+        - **Description:** Develop the basic structure of the signup page, including form fields for username, email and password.
+        - **Estimation:** 2 hours
+        - **Output:** A HTML-sematic static sign up form
+
+    - [ ] **Form Validation with Formik**
+        - **Description:** Integrate Formik for form state management and validation.
+        - **Estimation:** 3 hours
+        - **Output:** A working sign up page with complete validation errors and form error(like wrong user or password)
+
+    - [ ] **Routing with react-router-dom**
+        - **Description:** Ensure navigation to the signup page and redirect to the login page or other appropriate page after successful signup.
+        - **Estimation:** 2 hours
+
+2. **Backend**
+    - [ ] **Create Signup API Endpoint**
+        - **Description:** Develop the signup API endpoint in Django to handle new user registrations.
+        - **Estimation:** 2 hours
+        - **Output:** A API route to sign up, user infomation should be stored in the database, password should be hashed.
+    - [ ] **Send Confirmation Email**
+        - **Description:** Implement functionality to send a confirmation email upon successful signup.
+        - **Estimation:** 3 hours
+        - **Output:** Working email service, a email template for both html and text mail client.
+
+    - [ ] **Create Email Verification Endpoint**
+        - **Description:** Develop an endpoint to handle email verification when the user clicks the confirmation link.
+        - **Estimation:** 3 hours
+        - **Output:** When user click the confirmation link, it should active their account and redirect to login page. If user had been verified, that's link should be invalid and resulting in 404 not found.
+
+3. **Integration**
+    - [ ] **Frontend and Backend Integration**
+        - **Description:** Integrate the frontend signup form with the backend API.
+        - **Estimation:** 2 hours
+        - **Output:** Frontend should be able to call backend sign up API without any issues. API error response should also be handled 
+    - [ ] **Write Tests**
+        - **Description:** Write unit for the signup functionality.
+        - **Estimation:** 4 hours
+        - **Output:** A test suite in both frontend and backend with 80% coverage
 
 ### User Story: Login
 
-- [ ] Design login page (1 point)
+1. **Frontend**
+    - [ ] **Create Login Page Component**
+        - **Description:** Develop the basic structure of the login page including form fields for username and password.
+        - **Estimation:** 3 hours
+    - [ ] **Form Validation with Formik**
+        - **Description:** Integrate Formik for form state management and validation.
+        - **Estimation:** 2 hours
+    - [ ] **Integrate API Calls with @tanstack/react-query**
+        - **Description:** Set up react-query for handling API calls to the backend for login.
+        - **Estimation:** 4 hours
+    - [ ] **Error Handling and Notifications**
+        - **Description:** Display appropriate error messages when login fails.
+        - **Estimation:** 2 hours
+    - [ ] **Routing with react-router-dom**
+        - **Description:** Ensure navigation to the login page and redirect to the dashboard on successful login.
+        - **Estimation:** 2 hours
+    - [ ] **Write Tests using @testing-library/react**
+        - **Description:** Write unit and integration tests for the login functionality.
+        - **Estimation:** 3 hours
 
-- [ ] Implement Login Form UI and client-side validation (2 points)
+2. **Backend**
+    - **Create Login API Endpoint**
+        - **Description:** Develop the login API endpoint in Django to handle authentication.
+        - **Estimation:** 4 hours
+    - **Database Setup for User Authentication**
+        - **Description:** Ensure the database (Postgres) has the necessary schema for user authentication.
+        - **Estimation:** 2 hours
 
-- [ ] Write unit tests for login UI (1 point)
-
-- [ ] Write API login endpoint(1 points)
-
-- [ ] Implement Logout and JWT token invalidate (1 point)
-
-- [ ] Write unit tests for login API (1 point)
-
-
+3. **Integration**
+    - [ ] **Frontend and Backend Integration**
+        - **Description:** Integrate the frontend login form with the backend API.
+        - **Estimation:** 2 hours
+    - [ ] **Write Tests**
+        - **Description:** Write unit for the login functionality.
+        - **Estimation:** 4 hours
+        - **Output:** A test suite in both frontend and backend with 80% coverage
 
 ### User Story: Create Note
 
-- [ ] Design note list and detail page (2 points)
+1. Frontend
 
-- [ ] Implement basic note create, update, and delete form and actions (dialogs) (3 points)
+   - [ ] **Implement Note list (User Dashboard) Page**
+       - **Description:** Implement Note listing page 
+       - **Estimation:** 4 hours
+       - **Output:** A User Dashboard listing user note.
 
-- [ ] Write API for saving note and view saved notes (2 points)
+   - [ ] **Implement Note Detail Page**
+       - **Description:** Implement Note listing page 
+       - **Estimation:** 4 hours
+       - **Output:** A User Dashboard listing user note.
 
-- [ ] Add note text-formatting (2 points)
+   - [ ] **Implement Create Note Dialog**
+       - **Description:** Implement Create Note Dialog. Dialog can be opened from note details and note list page. Additional keyboard short-cut for power user should be considered.
+       - **Estimation:** 4 hours
+       - **Output:** A functional create note dialog modal. User should be redirect to note detail after create note.
 
-- [ ] Revise database to store rich text format (1 points)
+   - [ ] **Add Note Text-Formatting UI**
+       - **Description:** Update note dialog to include a rich text editor with basic formating (bold, italic, underline)
+       - **Estimation:** 4 hours
+       - **Output:** A note create dialog with basic text formating support
 
-- [ ] Write unit tests for note CRUD API (1 points)
+2. Backend
+
+   - [ ] **Write API for Saving Notes, Viewing Saved Notes and Note List**
+       - **Description:** Implement note create, note list and note detail API. Some error handling like blank title note, note not found should be consisdered. API should be able to store richtext format.
+       - **Estimation:** 6 hours
+       - **Output:** Note creation and node detail API
+
+3. Intergration
+
+   - [ ] **Intergrate UI with backend API**
+       - **Description:** Intergate Frontend UI and Backend API
+       - **Estimation:** 4 hours
+       - **Output:** Functional create, view and list note pages
+
+   - [ ] **Write Unit Tests**
+       - **Description:** Write unitest for note CRUD API and UI
+       - **Estimation:** 4 hours
+       - **Output:** Test suite with 80% coverage
+
 
 ### User Story: Edit Note
 
-- [x] Create Note Update Form (Done in previous user story)
+1. Frontend: 
 
-- [ ] Write note update API (1 points)
+   - [ ] **Add Note Update Dialog**
+       - **Description:** Implement Update Note Dialog. Dialog can be opened from note details and note list page. Additional keyboard short-cut for power user should be considered. This dialog should be adapt from Note Create Dialog
+       - **Estimation:** 2 hours
+       - **Output:** Note Update Dialog
 
-- [ ] Write version history API (need research to store versions efficiently) (3 points)
+2. Backend
 
-- [ ] Write unit tests for note update and version history API (2 points)
+    - [ ] **Write API for Update Note**
+         - **Description:** Implement note update API
+         - **Estimation:** 1 hours
+         - **Output:** Note update API
+
+3. Intergration
+
+    - [ ] **Intergrate UI with backend API**
+       - **Description:** Intergate Frontend UI and Backend API
+       - **Estimation:** 4 hours
+       - **Output:** Functional create, view and list note pages
+
+   - [ ] **Write Unit Tests**
+       - **Description:** Write unitest for note CRUD API and UI
+       - **Estimation:** 4 hours
+       - **Output:** Test suite with 80% coverage
 
 ### User Story: Delete Note
 
-- [ ] Create Note Delete UI (Button & Confirm Dialog) (2 point)
+1. Front end
+- [ ] **Add Note Delete Confirmation Dialog**
+      - **Description:** Implement Delete Note Dialog. Dialog can be opened from note details and note list page.
+      - **Estimation:** 2 hours
+      - **Output:** Note Delete Dialog
 
-- [ ] Write unit tests for note deletion (1 point)
+2. Backend
+    - [ ] **Write API for Delete Note**
+        - **Description:** Implement note delete API
+        - **Estimation:** 1 hours
+        - **Output:** Note delete API
 
-- [ ] Write note delete API (1 points)
+3. **Intergation**
+    - [ ] **Intergrate UI with backend API**
+       - **Description:** Intergate Frontend UI and Backend API
+       - **Estimation:** 4 hours
+       - **Output:** Functional create, view and list note pages
 
-- [ ] Write unit tests for note delete API (1 point)
-
+   - [ ] **Write Unit Tests**
+       - **Description:** Write unitest for note CRUD API and UI
+       - **Estimation:** 4 hours
+       - **Output:** Test suite with 80% coverage
 
 ### User Story: Role & Permission Management
 
-- [ ] Write API for role CRUD (1 point)
+> Only admin can access following pages and apis.
 
-- [ ] Write API for role assignment (2 points)
+1. Frontend
+    - [ ] **Implement Role List Page**
+      - **Description:** Write a page to view existing role in system. Only admin can access this page.
+      - **Estimation:** 4 hours
+      - **Output:** Role listing page, role should be sorted by created time. Admin should see a navigation link from dashboard to this page.
 
-- [ ] Design Role Management Page (3 points)
+    - [ ] **Role Create & Update Dialog**
+       -  **Description:** Create and Update Dialog can be open from Role listing page. Admin will be able to update permission for existing role or create a new one with permissions(read/write/delete)
+       -  **Estimation:** 6 hours
+       -  **Output:** Create & Update Dialog for role.
+    
+    - [ ] **Role Deletion Dialog**
+      -  **Description:** Role confirmation dialog. If a role is deleted, all users have that role also lost permissions given by that role.
+       -  **Estimation:** 2 hours
 
-- [ ] Implement Role Creation & Update Form (3 points)
+    - [ ] **Role assign dialog**
+      - [ ] **Description:** From Role management page, admin can open role assign dialog. They will be able to pick an user with the first input, then choosen user role will be loaded in the second multi-select. Admin then can update that user roles and save.
+      - [ ] **Estimation:** 4 hours
 
-- [ ] Implement Role Delete Confirmation Dialog (2 points)
+2. Backend
+    - [ ] **Write CRUD Role API**
+      - **Description**: Write CRUD API for Role to able admin create, update or delete role permissions.
+      - **Estimation**: 4 hours
 
-- [ ] Implement Role Assign User Form (1 points)
+    - [ ] Write Role assign APIs
+      - **Description:** Write user role assign API. Add username search API to support admin choose user in assign dialog.
+      - **Estimation**: 4 hours
 
-- [ ] Revise note CRUD API to add role-based access control (2 points)
 
-- [ ] Write unit tests for role & permission management API (1 points)
+3. Intergate
 
-- [ ] Write unit tests for role & permission management UI (2 points)
+    - [ ] **Intergrate UI with backend API**
+       - **Description:** Intergate Frontend UI and Backend API
+       - **Estimation:** 4 hours
+       - **Output:** Functional create, view and list note pages
 
+   - [ ] **Write Unit Tests**
+       - **Description:** Write unitest for note CRUD API and UI
+       - **Estimation:** 4 hours
+       - **Output:** Test suite with 80% coverage
 
 ## Appendix
 (Include any additional information or resources here)
