@@ -1,0 +1,36 @@
+
+Chào anh/chị.
+Sau khi đọc các yêu cầu và tìm hiểu thêm, em có một số câu hỏi như sau:
+
+Background: Tài liệu liên quan đến đợt training này anh/chị có thể xem ở đây: https://github.com/blueoc-phucpham/notes.git
+
+1. Về phần document:
+- Em có nên tách thành nhiều tài liệu không?
+Theo như em tìm hiểu thì tài liệu spike chỉ để thử nghiệm thêm về một yếu tố nào đó của User Story.
+Ví dụ phần tìm hiểu các cơ chế bảo mật cho User Story #1 Login như lưu password trong DB, cơ chế authencicate như TOTP, JWT hay session based đã khá là dài.
+
+- Mục tiêu chính của tài liệu là gì? (Kiểu nếu một người đọc cái tài liệu này thì họ sẽ kì vọng cái gì ấy ạ)
+
+2. Về phần requirement:
+- Nếu em thấy cần thêm tính năng A nhưng nó cũng tốn thêm thời gian thì em có nên đề xuất không?
+Như phần login thì có thể support OAuth hay TOTP, hoặc cần thêm chức năng reset password..
+
+- Em nên tập trung làm rõ requirement hay làm trước một phiên bản đơn giản?
+Ví dụ User Story: Create Note, em nên làm rõ thêm mình cần support các formating (in đậm, in nghiêng...) hay giả sử mình chưa hỗ trợ?
+
+3. Về phần technical:
+
+- Khi em cần giải quyết một vấn đề nào đấy thì em cần tìm hiểu thêm, so sách các giải pháp và confirm lại. Hay em nên dùng cái mà em ưu tiên, document lại việc đấy?
+Ví dụ User Story: Sign Up, ở phần gửi mail xác thực, em đã từng làm cái này với Gmail nên nếu em chọn Gmail thì sẽ nhanh hơn.
+
+
+===== Answer Section
+
+1. Về document:
+- Em có 1 tài liệu chính và các phần liên quan nếu phức tạp thì chia ra các tài liệu nhỏ hơn, link đến tài liệu chính của mình
+- Mục tiêu của tài liệu để các anh chị leader vào đọc có thể hiểu được solution của em, để có thể có feedback. Trước khi em bước vào quá trình implement thì sẽ cần được approve về solution / estimate
+2. Về phần requirement:
+    - Có, việc này rất được welcome. Nếu em có ý tưởng để tính năng nó hoạt động tốt hơn (ổn định hơn, bảo mật hơn) hoặc thuận tiện cho người dùng thì em raise lên để mọi người cùng thảo luận
+    - Em tập trung làm rõ requirement trước, vì em sẽ phải đưa ra estimate. Để phục vụ việc solution có chạy đc ko, em có thể làm 1 cái POC nhỏ để thử. Nhưng mình không code ngay
+3. Về phần technical:
+    -Em đưa ra tất cả các phương án mà em đã tính tới (ưu + nhược điểm). Em chọn phương án nào thì sẽ cần convince được mọi người

@@ -1,6 +1,6 @@
-# Training Program
+# Notes App
 
-> The trainee has to make an MVP note app and document the process.
+> This document outlines the process making a note taking app to sastify below user stories.
 
 ## Tech Stack
 - **FE:** ReactJS / TypeScript / react-router-dom / @tanstack/react-query / styled-components / @testing-library/react / Formik
@@ -11,7 +11,7 @@
 - Document (following template) → required to estimate tasks.
 - Write unit tests for both FE & BE.
 - Actively discuss requirements, technical issues, and documentation writing via meeting/Skype/call.
-- Report: Daily progress report through Skype, demo work at the end of each week.
+- Report: Daily progress report in daily standup (10:30 AM), demo work at the end of each week.
 
 ## User Stories
 
@@ -71,4 +71,3 @@ As a user, I want to delete a note so that I can remove information that is no l
 2. The user can click a "Delete" button to remove the note.
 3. The user receives a confirmation prompt before the note is deleted.
 
----
