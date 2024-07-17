@@ -1,30 +1,58 @@
-## Task Title
-*Task ID:* [ID]
+## Identify and list API endpoints
+*Task ID:* YAN-2
 
 ### Description
-Provide a detailed description of the task. Explain what needs to be done and why it is important. Include any background information or context that will help understand the task.
+
+Task to create a list of API endpoints based on requirement
 
 ### Objectives
-- **Goal 1:** Briefly describe the first goal.
-- **Goal 2:** Briefly describe the second goal (if applicable).
-- **Goal 3:** Briefly describe the third goal (if applicable).
+- API endpoint list should be clear and simple
+- API endpoint should follow RESTful API spec
 
 ### Dependencies
-- **Depends on:** List any tasks or user stories that this task depends on.
-- **Dependents:** List any tasks or user stories that depend on this task.
+None
 
 
 ### Acceptance Criteria
-- **Criterion 1:** Describe the first acceptance criterion.
-- **Criterion 2:** Describe the second acceptance criterion.
-- **Criterion 3:** Describe the third acceptance criterion (if applicable).
+- **Criterion 1:** Each API spec should include route, method, query params, path variable, request body, response case.
+For example:
+
+GET /api/v1/notes
+
+request:
+
+```json
+{
+    title: str,
+    content: str
+}
+```
+
+response 200 OK
+
+```json
+{
+    title: str,
+    content: str,
+    created_at: datetime,
+    updated_at: datetime,
+    version: int,
+    author: {
+        id: int,
+        username: str
+    }
+}
+```
+
+- The API spec should be written in openapi spec in stored under: `docs/api`.
+
 
 ### Estimated Effort
-*Estimate:* X story points or X hours
+*Estimate:* 1 point
 
 ### Additional Notes
-- Any additional notes or comments.
-- Include links to relevant documentation, designs, or other resources.
+
+The spec may be updated in the future if requirement is clarify futher.
 
 ---
 

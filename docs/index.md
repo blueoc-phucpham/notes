@@ -108,11 +108,11 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 - [ ] [Design preliminary database schema](./tasks/note-1.md) (1 point)
 
-- [ ] Identify and list API endpoints (1 point)
+- [ ] [Identify and list API endpoints](./tasks/note-2.md) (1 point)
 
 - [ ] Identify and list app screens and their purposes (2 points)
 
-- [ ] Find similar apps to get UI inspiration(0.5 point)
+- [ ] Find similar apps to get UI inspiration (0.5 point)
 
 - [ ] Find appropriate library for implementing common task (sign up, login, role-based control) (0.5 point)
 
