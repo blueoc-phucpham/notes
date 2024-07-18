@@ -67,7 +67,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 4. How do we create an admin account? Are there limits on the number of admin accounts?
 5. Can admin view/update/delete user's notes? Or deactivate user account? Can admin view all user's infomation?
 
-6. Does the design support mobile (responsive) functionality across different screen sizes? If not, what changes are needed?
+6. Does the design support mobile (responsive) functionality across different screen sizes?
 
 7. Is there a limit on how much note user can save? What should be done if one user spam very long note?
 
@@ -98,7 +98,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 #### User Edit Note
 
-14. Note version history support?
+14. Note edit history support?
 15. Can multiple user edit the same note?
 
 #### User Delete note
@@ -138,12 +138,12 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 1. **Frontend**
     - [ ] **Create Signup Page Component**
         - **Description:** Develop the basic structure of the signup page, including form fields for username, email and password.
-        - **Estimation:** 2 hours
-        - **Output:** A HTML-sematic static sign up form
+        - **Estimation:** 4 hours
+        - **Output:** A signup page styled exactly like design.
 
     - [ ] **Form Validation with Formik**
         - **Description:** Integrate Formik for form state management and validation.
-        - **Estimation:** 3 hours
+        - **Estimation:** 4 hours
         - **Output:** A working sign up page with complete validation errors and form error(like wrong user or password)
 
     - [ ] **Routing with react-router-dom**
@@ -162,8 +162,8 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
     - [ ] **Create Email Verification Endpoint**
         - **Description:** Develop an endpoint to handle email verification when the user clicks the confirmation link.
-        - **Estimation:** 3 hours
-        - **Output:** When user click the confirmation link, it should active their account and redirect to login page. If user had been verified, that's link should be invalid and resulting in 404 not found.
+        - **Estimation:** 2 hours
+        - **Output:** When user click the confirmation link in email, it should active their account and redirect to login page.
 
 3. **Integration**
     - [ ] **Frontend and Backend Integration**
@@ -180,29 +180,19 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 1. **Frontend**
     - [ ] **Create Login Page Component**
         - **Description:** Develop the basic structure of the login page including form fields for username and password.
-        - **Estimation:** 3 hours
-    - [ ] **Form Validation with Formik**
-        - **Description:** Integrate Formik for form state management and validation.
-        - **Estimation:** 2 hours
-    - [ ] **Integrate API Calls with @tanstack/react-query**
-        - **Description:** Set up react-query for handling API calls to the backend for login.
         - **Estimation:** 4 hours
-    - [ ] **Error Handling and Notifications**
-        - **Description:** Display appropriate error messages when login fails.
+    - [ ] **Form Validation with Formik**
+        - **Description:** Integrate Formik for form state management and validation including when login fail.
         - **Estimation:** 2 hours
+
+
     - [ ] **Routing with react-router-dom**
         - **Description:** Ensure navigation to the login page and redirect to the dashboard on successful login.
-        - **Estimation:** 2 hours
-    - [ ] **Write Tests using @testing-library/react**
-        - **Description:** Write unit and integration tests for the login functionality.
-        - **Estimation:** 3 hours
+        - **Estimation:** 0.5 hours
 
 2. **Backend**
     - **Create Login API Endpoint**
         - **Description:** Develop the login API endpoint in Django to handle authentication.
-        - **Estimation:** 4 hours
-    - **Database Setup for User Authentication**
-        - **Description:** Ensure the database (Postgres) has the necessary schema for user authentication.
         - **Estimation:** 2 hours
 
 3. **Integration**
@@ -248,7 +238,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 3. Intergration
 
    - [ ] **Intergrate UI with backend API**
-       - **Description:** Intergate Frontend UI and Backend API
+       - **Description:** Intergate Frontend UI and Backend API for create note story.
        - **Estimation:** 4 hours
        - **Output:** Functional create, view and list note pages
 
@@ -289,7 +279,8 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 ### User Story: Delete Note
 
 1. Front end
-- [ ] **Add Note Delete Confirmation Dialog**
+   - [ ] **Add Note Delete Confirmation Dialog**
+
       - **Description:** Implement Delete Note Dialog. Dialog can be opened from note details and note list page.
       - **Estimation:** 2 hours
       - **Output:** Note Delete Dialog
@@ -302,8 +293,8 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 3. **Intergation**
     - [ ] **Intergrate UI with backend API**
-       - **Description:** Intergate Frontend UI and Backend API
-       - **Estimation:** 4 hours
+       - **Description:** Intergate Frontend UI and Backend API for delete note
+       - **Estimation:** 2 hours
        - **Output:** Functional create, view and list note pages
 
    - [ ] **Write Unit Tests**
