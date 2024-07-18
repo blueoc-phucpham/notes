@@ -90,11 +90,10 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 #### Role & Permission Management
 
 11. Access control rules is per document (like google docs) or system wide?
-12. Can one user view/update/delete other's note if given edit role?
+12. Can one user view/update/delete other user's note if given edit role?
 
 #### User create note
 
-12. Can note contain images?
 13. Can users share their note to other user?
 
 #### User Edit Note
