@@ -358,7 +358,11 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 (Include any additional information or resources here)
 
 ## Edit History
+> Major versions are tagged by git.
 
-(Track changes and updates to the document here)
+| Version       | Tag    |
+|---------------|--------|
+| First version | v0.1.0 |
+|               |        |
 
 ---
