@@ -90,6 +90,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 #### Role & Permission Management
 
 11. Access control rules is per document (like google docs) or system wide?
+12. Can one user view/update/delete other's note if given edit role?
 
 #### User create note
 
@@ -151,6 +152,10 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
         - **Estimation:** 2 hours
 
 2. **Backend**
+   - [ ] **Create Search User API Endpoint**
+        - **Description:** Develop the search user API endpoint in Django to support user signup workflow. User may search user by username or email.
+        - **Estimation:** 2 hours
+        - **Output:** A API route to search user by username or email.
     - [ ] **Create Signup API Endpoint**
         - **Description:** Develop the signup API endpoint in Django to handle new user registrations.
         - **Estimation:** 2 hours
@@ -187,7 +192,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 
     - [ ] **Routing with react-router-dom**
-        - **Description:** Ensure navigation to the login page and redirect to the dashboard on successful login.
+        - **Description:** Ensure navigation to the login page and redirect to the dashboard on successful login. Should be adapt from similar task in sign up.
         - **Estimation:** 0.5 hours
 
 2. **Backend**
@@ -209,14 +214,14 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 1. Frontend
 
    - [ ] **Implement Note list (User Dashboard) Page**
-       - **Description:** Implement Note listing page 
+       - **Description:** Implement Note listing page. User can only see their saved note(not other users). Unauthenticated user will be redirect to login. 
        - **Estimation:** 4 hours
        - **Output:** A User Dashboard listing user note.
 
    - [ ] **Implement Note Detail Page**
-       - **Description:** Implement Note listing page 
+       - **Description:** Implement Note Detail page. User should be able to go to this page from dashboard. Unauthenticated user will be redirect to login. Unauthorized user will see a 404 page
        - **Estimation:** 4 hours
-       - **Output:** A User Dashboard listing user note.
+       - **Output:** A User Dashboard Detail user note.
 
    - [ ] **Implement Create Note Dialog**
        - **Description:** Implement Create Note Dialog. Dialog can be opened from note details and note list page. Additional keyboard short-cut for power user should be considered.
@@ -287,7 +292,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 2. Backend
     - [ ] **Write API for Delete Note**
-        - **Description:** Implement note delete API
+        - **Description:** Implement note delete API. Only user with delete permission can delete note.
         - **Estimation:** 1 hours
         - **Output:** Note delete API
 
@@ -308,7 +313,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 1. Frontend
     - [ ] **Implement Role List Page**
-      - **Description:** Write a page to view existing role in system. Only admin can access this page.
+      - **Description:** Write a page to view existing role in system. Only admin can access this page. Each role permission should be visible.
       - **Estimation:** 4 hours
       - **Output:** Role listing page, role should be sorted by created time. Admin should see a navigation link from dashboard to this page.
 
@@ -327,12 +332,15 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 2. Backend
     - [ ] **Write CRUD Role API**
-      - **Description**: Write CRUD API for Role to able admin create, update or delete role permissions.
+      - **Description**: Write CRUD API for Role to able admin create, update or delete role permissions. Admin should be able to create new role with permission (view/update/delete) or update existing role permissions. Only admin can access this api, normal user will see a 403 status code
       - **Estimation**: 4 hours
 
-    - [ ] Write Role assign APIs
-      - **Description:** Write user role assign API. Add username search API to support admin choose user in assign dialog.
-      - **Estimation**: 4 hours
+    - [ ] **Write Role assign APIs**
+      - **Description:** Write user role assign API. Add username search API to support admin choose user in assign dialog. Already done in user sign up story.
+    
+    - [ ] **Ensure access control in Note CRUD API**
+      - **Description:** Review and update note CRUD API to align with user's role. Update UI to hide update/delete button based on user permissions.
+      - **Estimate:** 4 hours
 
 
 3. Intergate
