@@ -62,16 +62,33 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 ### Common
 
 1. What metrics or criteria should we use to evaluate our test suite's effectiveness?
+
+> The test should cover both happy case, invalid input data and unexpected exception.
+> The coverage should be at least 80%
+
 2. Should all user data be encrypted in the database?
 
-4. How do we create an admin account? Are there limits on the number of admin accounts?
-5. Can admin view/update/delete user's notes? Or deactivate user account? Can admin view all user's infomation?
+> Encrypt password
 
-6. Does the design support mobile (responsive) functionality across different screen sizes?
+3. How do we create an admin account? Are there limits on the number of admin accounts?
 
-7. Is there a limit on how much note user can save? What should be done if one user spam very long note?
+> Only one admin on system initialized.
 
-8. Is note searching and categorizing is needed?
+4. Can admin view/update/delete user's notes? Or deactivate user account? Can admin view all user's infomation?
+
+> Admin can do anything in system.
+
+5. Does the design support mobile (responsive) functionality across different screen sizes?
+
+> Should be considered
+
+6. Is there a limit on how much note user can save? What should be done if one user spam very long note?
+
+> 10 notes per user
+
+7. Is note searching and categorizing is needed?
+
+> No
 
 ### Requirement
 
@@ -79,35 +96,55 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 7. How much personal information is needed beyond name, email, and password? Should we include full name, avatar, and bio?
 
+> Only name, email and password
+
 8. Can one email address be used to create multiple accounts?
 
+> No
+
 9. Are there any specific password rules for security, like requiring at least one capital letter, one lowercase letter, a number, and a symbol?
+
+> at least 8 characters with letters (both uppercase and lowercase), numbers, and symbols, and includes no obvious personal information 
 
 #### User login
 
 10. What happens if users forget their password?
 
+> Not on scope
+
 #### Role & Permission Management
 
 11. Access control rules is per document (like google docs) or system wide?
+
+> Per document
+
 12. Can one user view/update/delete other user's note if given edit role?
+
+> Yes
 
 #### User create note
 
 13. Can users share their note to other user?
 
+> Note visible by everyone by default.
+
 #### User Edit Note
 
 14. Note edit history support?
+
+> Yes
+
 15. Can multiple user edit the same note?
+
+> Yes, but not in the same time
 
 #### User Delete note
 
 16. Is the note really deleted or should be kept in database (soft-delete)?
 
-## Estimate
+> Soft-delete
 
-> From the developer point of view: 1 story point ~ 4h or 0.5 Dev Days
+## Estimate
 
 ### Baseline
 
