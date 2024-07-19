@@ -147,8 +147,8 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 ### Task list
 
-Total time: 100 hours
-Total story points: 47
+Total time: 125 hours
+Total story points: 66
 
 #### Backend
 
@@ -172,22 +172,21 @@ Total story points: 47
 
 #### Frontend
 
-**Story point: **: 36 points
+**Time**: 68 hours
 
-**Time**: 70 hours
+**Story point**: 37 points
 
-14. Draw basic mock up (5, 8)
-15. Set up project (3, 4)
-16. Config page routing & responsive design (3, 6)
-17. login & sign up page (5, 8)
-18. dashboard(note list) page ()
-19. detail note page
-20. edit history dialog
-21. note update/delete dialog
-22. \[admin\] user list page
-23. \[admin\] role assign dialog
-24. \[admin\] user role list page
-25. \[admin\] user role update/delete dialog
+14. [Draw basic mock up](./tasks/note-14.md)
+15. [Set up project](./tasks/note-15.md)
+16. [Config page routing & responsive design](./tasks/note-16.md)
+17. [login & sign up page](./tasks/note-17.md)
+18. [dashboard(note list) page](./tasks/note-18.md)
+19. [detail note page](./tasks/note-19.md)
+20. [edit history dialog](./tasks/note-20.md)
+21. [note update/delete dialog](./tasks/note-21.md)
+22. [\[admin\] user role list page](./tasks/note-22.md)
+23. [\[admin\] role assign dialog](./tasks/note-23.md)
+24. [\[admin\] user role update/delete dialog](./tasks/note-24.md)
 
 
 ## Appendix
