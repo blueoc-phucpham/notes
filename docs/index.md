@@ -23,7 +23,7 @@
     - [Task list](#task-list)
       - [Backend](#backend)
       - [Frontend](#frontend)
-      - [Deployment](#deployment)
+      - [Deployment (optional)](#deployment-optional)
   - [Appendix](#appendix)
   - [Edit History](#edit-history)
 
@@ -148,36 +148,44 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 ### Task list
 
+Total time: 100 hours
+Total story points: 47
+
 #### Backend
 
 1. [Design database](./tasks/note-1.md)
 2. [Set up project](./tasks/note-2.md)
 3. [Write note CRUD api & unittest](./tasks/note-3.md)
-4. Write user CRUD api & unittest
-5. Write user search by username and email api & unittest
-6. Config send email service
-7. Write email account verification api & unittest
-8. Config admin account creation
-9. Implement user authentication & authorization with JWT
+4. [Write note edit version history api & unittest](./tasks/note-4.md)
+5. [Write user sign up api & unittest](./tasks/note-5.md)
+6. [Write user login and logout api](./tasks/note-6.md)
+7. [Write user search by username and email api & unittest](./tasks/note-7.md)
+8. [Config send email service](./tasks/note-8.md)
+9. [Write email account verification api & unittest](./tasks/note-9.md)
+10. [Config admin account creation](./tasks/note-10.md)
+11. [admin] [write role CRUD API](./tasks/note-11.md)
+12. [admin] [write role assign/unassign api](./tasks/note-12.md)
+13. [Config user authorization](./tasks/note-13.md)
 
 #### Frontend
 
-10. Draw basic mock up
-11. Set up project
-12. Config page routing & responsive design
-13. login & sign up page
-14. dashboard(note list) page
-15. detail note page
-16. note update/delete dialog
-17. \[admin\] user list page
-18. \[admin\] user role list page
-19. \[admin\] role assign dialog
+15. Draw basic mock up
+16. Set up project
+17. Config page routing & responsive design
+18. login & sign up page
+19. dashboard(note list) page
+20. detail note page
+21. note update/delete dialog
+22. \[admin\] user list page
+23. \[admin\] role assign dialog
+24. \[admin\] user role list page
+25. \[admin\] user role update/delete dialog
 
-#### Deployment
+#### Deployment (optional)
 
-20. Write Dockerfile for api
-21. Write Dockerfile for frontend server
-22. Set up Caddy reverse proxy
+26. Write Dockerfile for api
+27. Write Dockerfile for frontend server
+28. Set up Caddy reverse proxy
 
 ## Appendix
 (Include any additional information or resources here)
