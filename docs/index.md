@@ -195,9 +195,10 @@ Total story points: 66 points
 ## Edit History
 > Major versions are tagged by git.
 
-| Version       | Tag    |
-| ------------- | ------ |
-| First version | v0.1.0 |
-|               |        |
+|           Version          |   Tag  |
+|:--------------------------:|:------:|
+| First version              | v0.1.0 |
+| Second version             | v0.2.0 |
+
 
 ---
