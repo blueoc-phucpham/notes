@@ -148,7 +148,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 ### Task list
 
 Total time: 125 hours
-Total story points: 66
+Total story points: 66 points
 
 #### Backend
 
