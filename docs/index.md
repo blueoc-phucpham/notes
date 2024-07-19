@@ -55,7 +55,8 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 (To be filled in during the spike)
 
 ## Unresolved Questions
-
+<details>
+<summary>Details</summary>
 ### Common
 
 1. What metrics or criteria should we use to evaluate our test suite's effectiveness?
@@ -141,6 +142,8 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 
 > Soft-delete
 
+</details>
+
 ## Estimate
 
 ### Task list
@@ -183,7 +186,7 @@ The developer needs to make a plan and estimate tasks to create a note-taking ap
 > Major versions are tagged by git.
 
 | Version       | Tag    |
-|---------------|--------|
+| ------------- | ------ |
 | First version | v0.1.0 |
 |               |        |
 
