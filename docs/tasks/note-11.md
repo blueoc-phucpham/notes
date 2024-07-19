@@ -1,8 +1,8 @@
-## Config user authorization
+## write role CRUD API
 
 ### Description
 
-When user click on link in sign up email, their account should be verified. Then user can login to their account
+Admin can create new role with permission. Admin can also update permissions of existing role or remove old role.
 
 ### Objectives
 
@@ -17,9 +17,7 @@ When user click on link in sign up email, their account should be verified. Then
 
 ### Acceptance Criteria
 
-- User can verified account by following the link in the sign up email.
-- Link must affect once and with one user only.
-
+- Admin can create/update/delete role
 
 ### Estimated Effort
 

@@ -23,13 +23,12 @@
     - [Task list](#task-list)
       - [Backend](#backend)
       - [Frontend](#frontend)
-      - [Deployment (optional)](#deployment-optional)
   - [Appendix](#appendix)
   - [Edit History](#edit-history)
 
 ## Context
 
-The developer needs to make a plan and estimate tasks to create a note-taking app with basic user authentication and role-based access control (details in the [README](../README.md#user-stories)).
+The developer needs to make a plan and estimate tasks to create a note-taking app with basic user authentication and role-based access control (details in the [requirement.md](./requirement.md#user-stories)).
 
 **Knowledge Gap**:
 
@@ -153,6 +152,10 @@ Total story points: 47
 
 #### Backend
 
+**Time**: 57 hours
+
+**Story point**: 29 point
+
 1. [Design database](./tasks/note-1.md)
 2. [Set up project](./tasks/note-2.md)
 3. [Write note CRUD api & unittest](./tasks/note-3.md)
@@ -169,23 +172,23 @@ Total story points: 47
 
 #### Frontend
 
-15. Draw basic mock up
-16. Set up project
-17. Config page routing & responsive design
-18. login & sign up page
-19. dashboard(note list) page
-20. detail note page
+**Story point: **: 36 points
+
+**Time**: 70 hours
+
+14. Draw basic mock up (5, 8)
+15. Set up project (3, 4)
+16. Config page routing & responsive design (3, 6)
+17. login & sign up page (5, 8)
+18. dashboard(note list) page ()
+19. detail note page
+20. edit history dialog
 21. note update/delete dialog
 22. \[admin\] user list page
 23. \[admin\] role assign dialog
 24. \[admin\] user role list page
 25. \[admin\] user role update/delete dialog
 
-#### Deployment (optional)
-
-26. Write Dockerfile for api
-27. Write Dockerfile for frontend server
-28. Set up Caddy reverse proxy
 
 ## Appendix
 (Include any additional information or resources here)
