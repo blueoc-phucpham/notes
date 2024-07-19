@@ -1,15 +1,13 @@
-## Design Design preliminary database schema
-*Task ID:* YAN-1
+## Design database
 
 ### Description
 
-Design a base database schema to satisfy [user stories](../../README.md#user-stories) and act as a base for other task.
+Design a base database schema to satisfy [user stories](../requirement.md) and act as a base for other task.
+
 ### Objectives
 
 - The schema shoud at least sastify Third Normal Form(3NF)
-
 - Additional indexes should be consisdered for performance reason
-
 - Postgresql advantages should be consider when design tables, contraints...
 
 ### Dependencies
@@ -23,7 +21,8 @@ None
 
 ### Estimated Effort
 
-*Estimate:* 1 points (4 hours)
+- **Story Point:** 3 points
+- **Time:** 4 hours
 
 ### Additional Notes
 
@@ -31,3 +30,4 @@ None
 
 ---
 
+### [Back to index.md](../index.md#task-list)

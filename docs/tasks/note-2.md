@@ -1,58 +1,39 @@
-## Identify and list API endpoints
-*Task ID:* YAN-2
+## Set up project
 
 ### Description
 
-Task to create a list of API endpoints based on requirement
+Set up project with needed tool and library for backend api.
 
 ### Objectives
-- API endpoint list should be clear and simple
-- API endpoint should follow RESTful API spec
+
+- Django bestpractice should be follow
+- Code convention and pre-commit formmter must be install
+- Commitlint and atomic commit enforcement.
+- Latest stable Python and Django version should be used.
+- Unitest and dependencies mock setup
 
 ### Dependencies
+
 None
 
-
 ### Acceptance Criteria
-- **Criterion 1:** Each API spec should include route, method, query params, path variable, request body, response case.
-For example:
 
-GET /api/v1/notes
-
-request:
-
-```json
-{
-    title: str,
-    content: str
-}
-```
-
-response 200 OK
-
-```json
-{
-    title: str,
-    content: str,
-    created_at: datetime,
-    updated_at: datetime,
-    version: int,
-    author: {
-        id: int,
-        username: str
-    }
-}
-```
-
-- The API spec should be written in openapi spec in stored under: `docs/api`.
-
+- Project structure must follow django convention
+- A functional hello-world api
+- A funcational hello-world unittest with coverage report
+- Pre-commit with ruff fommatter must be installed
+- Commitlint is recommended
 
 ### Estimated Effort
-*Estimate:* 1 point
+
+- **Story Point:** 2 points
+- **Time:** 4 hours
 
 ### Additional Notes
 
-The spec may be updated in the future if requirement is clarify futher.
+None
+
+### [Back to index.md](../index.md#task-list)
 
 ---
 

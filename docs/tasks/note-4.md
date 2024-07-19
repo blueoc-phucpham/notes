@@ -19,7 +19,6 @@ Write Note CRUD API
 
 - Note crud API follow restul api spec
 - Note deletion should be soft-delete
-- Update & Delete API must work the same with multiple call
 - List API must support pagination
 - Test report with 80% coverage
 
