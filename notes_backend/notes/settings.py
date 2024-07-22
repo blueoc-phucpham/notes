@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Self
 
-from pydantic import Field
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydjantic import BaseDBConfig, to_django
 
@@ -26,7 +26,7 @@ class DatabaseSettings(BaseDBConfig):
         default="sqlite:///db.sqlite3",
         alias="DATABASE_URL",
     )
-    model_config = SettingsConfigDict(env_file=BASE_DIR.parent / ".env")
+    model_config = SettingsConfigDict(env_file=BASE_DIR / ".env")
 
 
 class GeneralSettings(BaseSettings):
@@ -44,6 +44,8 @@ class GeneralSettings(BaseSettings):
 
     INSTALLED_APPS: List[str] = [
         "users",
+        "rest_framework_simplejwt",
+        "rest_framework",
         "django.contrib.admin",
         "django.contrib.auth",
         "django.contrib.contenttypes",
@@ -76,7 +78,32 @@ class GeneralSettings(BaseSettings):
             "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
         },
     ]
+
+    REST_FRAMEWORK: Dict = {
+        # Use Django's standard `django.contrib.auth` permissions,
+        # or allow read-only access for unauthenticated users.
+        "DEFAULT_PERMISSION_CLASSES": [
+            "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+        ],
+        "DEFAULT_AUTHENTICATION_CLASSES": [
+            "rest_framework_simplejwt.authentication.JWTAuthentication",
+            "rest_framework.authentication.SessionAuthentication",
+        ],
+        "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
+    }
+
     AUTH_USER_MODEL: str = "users.User"
+
+    @model_validator(mode="after")
+    def patch_setting_if_debug(self) -> Self:
+        if self.DEBUG:
+            self.REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [
+                "rest_framework.renderers.JSONRenderer",
+                "rest_framework.renderers.BrowsableAPIRenderer",
+            ]
+
+        return self
+        pass
 
 
 class I18NSettings(BaseSettings):
@@ -108,7 +135,7 @@ class StaticSettings(BaseSettings):
 
 
 class ProjectSettings(GeneralSettings, I18NSettings, StaticSettings):
-    model_config = SettingsConfigDict(env_file=BASE_DIR.parent / ".env", extra="allow")
+    model_config = SettingsConfigDict(env_file=BASE_DIR / ".env", extra="allow")
 
 
 to_django(ProjectSettings())
