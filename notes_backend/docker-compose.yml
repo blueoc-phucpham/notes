@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    command: uvicorn notes.asgi:application --host 0.0.0.0 --port 80
+    depends_on:
+      - postgres
+    ports:
+      - "8000:80"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/notes
+  postgres:
+    image: postgres:16.3-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: notes
