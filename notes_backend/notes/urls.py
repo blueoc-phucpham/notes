@@ -29,6 +29,7 @@ router.register(r"notes", NoteViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("api/user/signup", UserSignupView.as_view(), name="user-signup"),
+    path("api/user/verify", UserSignupView.as_view(), name="email-verification"),
     path("docs/openapi.yaml", SpectacularAPIView.as_view(), name="schema"),
     path(
         "docs/",

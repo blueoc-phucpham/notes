@@ -30,3 +30,19 @@ class UserSignupView(APIView):
                 status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserEmailVerificationView(APIView):
+    def get(self, request):
+        token = request.query_params.get("token", None)
+        if not token:
+            return Response(
+                data={"token": "This query params is required"},
+                status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            )
+
+        return Response(
+            data={
+                "message": "Your account has been verified. You can login and start using Note now"
+            }
+        )
