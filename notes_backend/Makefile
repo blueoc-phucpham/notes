@@ -1,7 +1,7 @@
 test:
 	pytest
 coverage:
-	pytest --cov=.
+	pytest --cov=. --cov-report lcov:lcov.info
 
 run:
 	python manage.py runserver

@@ -11,6 +11,7 @@ psycopg = {extras = ["binary"], version = "*"}
 pytest-django = "*"
 djangorestframework-simplejwt = "*"
 uvicorn = "*"
+drf-spectacular = "*"
 
 [dev-packages]
 pytest = "*"

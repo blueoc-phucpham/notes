@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from typing import Dict, List, Self
+from typing import Dict, List
 
-from pydantic import Field, model_validator
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydjantic import BaseDBConfig, to_django
 
@@ -44,9 +44,10 @@ class GeneralSettings(BaseSettings):
 
     INSTALLED_APPS: List[str] = [
         "users",
+        "core",
         "rest_framework_simplejwt",
+        "drf_spectacular",
         "rest_framework",
-        "django.contrib.admin",
         "django.contrib.auth",
         "django.contrib.contenttypes",
         "django.contrib.sessions",
@@ -90,20 +91,29 @@ class GeneralSettings(BaseSettings):
             "rest_framework.authentication.SessionAuthentication",
         ],
         "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
+        "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    }
+
+    SPECTACULAR_SETTINGS: Dict = {
+        "TITLE": "Notes API",
+        "DESCRIPTION": "Yet another notes API",
+        "VERSION": "1.0.0",
+        "SERVE_INCLUDE_SCHEMA": False,
+        # OTHER SETTINGS
     }
 
     AUTH_USER_MODEL: str = "users.User"
 
-    @model_validator(mode="after")
-    def patch_setting_if_debug(self) -> Self:
-        if self.DEBUG:
-            self.REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [
-                "rest_framework.renderers.JSONRenderer",
-                "rest_framework.renderers.BrowsableAPIRenderer",
-            ]
+    # @model_validator(mode="after")
+    # def patch_setting_if_debug(self) -> Self:
+    #     if self.DEBUG:
+    #         self.REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [
+    #             "rest_framework.renderers.JSONRenderer",
+    #             "rest_framework.renderers.BrowsableAPIRenderer",
+    #         ]
 
-        return self
-        pass
+    #     return self
+    #     pass
 
 
 class I18NSettings(BaseSettings):

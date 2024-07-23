@@ -48,3 +48,7 @@ pytest
 ```sh
 
 ```
+
+### Resource
+
+https://github.com/Vitaee/DjangoRestAPI
