@@ -156,8 +156,8 @@ Total story points: 66 points
 
 **Story point**: 29 point
 
-1. [Design database](./tasks/note-1.md)
-2. [Set up project](./tasks/note-2.md)
+1. [x] [Design database](./tasks/note-1.md)
+2. [x] [Set up project](./tasks/note-2.md)
 3. [Write note CRUD api & unittest](./tasks/note-3.md)
 4. [Write note edit version history api & unittest](./tasks/note-4.md)
 5. [Write user sign up api & unittest](./tasks/note-5.md)
