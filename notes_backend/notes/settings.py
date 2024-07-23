@@ -12,8 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from typing import Dict, List
+from xmlrpc.client import boolean
 
-from pydantic import Field
+from pydantic import AnyHttpUrl, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydjantic import BaseDBConfig, to_django
 
@@ -104,6 +105,9 @@ class GeneralSettings(BaseSettings):
 
     AUTH_USER_MODEL: str = "users.User"
 
+    APP_NAME: str = "Note"
+    BACKEND_HOST: AnyHttpUrl | str = "http://localhost:8000"
+
     # @model_validator(mode="after")
     # def patch_setting_if_debug(self) -> Self:
     #     if self.DEBUG:
@@ -114,6 +118,17 @@ class GeneralSettings(BaseSettings):
 
     #     return self
     #     pass
+
+
+class EmailSettings(BaseSettings):
+    EMAIL_ENABLED: bool = False
+    EMAIL_HOST: str | None = None
+    EMAIL_PORT: int | None = None
+    EMAIL_HOST_USER: str | None = None
+    EMAIL_HOST_PASSWORD: str | None = None
+    EMAIL_USE_TLS: boolean = False
+
+    model_config = SettingsConfigDict(env_file=BASE_DIR / ".env", extra="allow")
 
 
 class I18NSettings(BaseSettings):
@@ -144,8 +159,9 @@ class StaticSettings(BaseSettings):
     ]
 
 
-class ProjectSettings(GeneralSettings, I18NSettings, StaticSettings):
+class ProjectSettings(GeneralSettings, I18NSettings, StaticSettings, EmailSettings):
     model_config = SettingsConfigDict(env_file=BASE_DIR / ".env", extra="allow")
 
 
-to_django(ProjectSettings())
+settings = ProjectSettings()
+to_django(settings=settings)

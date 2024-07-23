@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Account</title>
+    <style>
+        /* Basic styling, you can customize this */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, {{ username }}!</h1>
+        <p>Thanks for signing up for {{ app_name }}!</p>
+        <p>To confirm your email address and activate your account, please click the link below:</p>
+        <p><a href="{{ verification_link }}">Verify Your Account</a></p>
+        <p>If you didn't request this email, please ignore it.</p>
+        <p>Best,</p>
+        <p>The {{ app_name }} Team</p>
+        <p>{{ app_host }}</p>
+    </div>
+</body>
+</html>

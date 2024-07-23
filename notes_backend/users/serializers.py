@@ -2,6 +2,7 @@ import django.contrib.auth.password_validation as validators
 from django.core import exceptions
 from rest_framework import serializers
 
+from users.emails import send_signup_email
 from users.models import User
 
 
@@ -28,6 +29,10 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         user.is_active = False
         user.set_password(user.password)
         user.save()
+
+        # send email
+        send_signup_email(user=user)
+
         return user
 
     class Meta:

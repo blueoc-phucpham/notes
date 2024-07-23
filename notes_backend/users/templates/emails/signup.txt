@@ -1,0 +1,13 @@
+Hi {{ username }},
+
+Thanks for signing up for {{ app_name }}!
+
+To confirm your email address and activate your account, please click the link below:
+
+{{ verification_link }}
+
+If you didn't request this email, please ignore it.
+
+Best,
+The {{ app_name }} Team
+{{ app_host }}
