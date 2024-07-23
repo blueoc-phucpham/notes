@@ -2,6 +2,9 @@ import pytest
 from django.urls import reverse
 from rest_framework import status
 
+from users.emails import send_signup_email
+from users.models import User
+
 # Create your tests here.
 
 
@@ -128,3 +131,33 @@ def test_signup_account_not_activated(client):
     response = client.post(url, data, content_type="application/json")
     assert response.status_code == status.HTTP_201_CREATED
     assert not response.json()["is_active"]
+
+
+@pytest.mark.django_db
+def test_send_email(mailoutbox):
+    # Create a test user
+    user = User.objects.create_user(
+        username="testuser", email="testuser@example.com", password="testpass123"
+    )
+
+    # Call the function to send the signup email
+    result = send_signup_email(user=user)
+
+    # Check that one email has been sent
+    assert result
+    assert len(mailoutbox) == 1
+
+    # Get the email from the outbox
+    email = mailoutbox[0]
+
+    # Verify email details
+    assert "Verify Your" in email.subject  # Adjust subject as per your implementation
+    assert email.to == [user.email]
+    assert "testuser" in email.body  # Assuming the username is in the email body
+    assert "best" in email.body.lower()  # Assuming 'welcome' is in the email body
+
+    # If you're sending HTML emails, you can check the HTML content too
+    if email.alternatives:
+        html_content = email.alternatives[0][0]
+        assert "testuser" in html_content
+        assert "welcome" in html_content.lower()
