@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Self
 from xmlrpc.client import boolean
 
-from pydantic import AnyHttpUrl, Field
+from pydantic import AnyHttpUrl, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydjantic import BaseDBConfig, to_django
 
@@ -84,12 +84,9 @@ class GeneralSettings(BaseSettings):
     REST_FRAMEWORK: Dict = {
         # Use Django's standard `django.contrib.auth` permissions,
         # or allow read-only access for unauthenticated users.
-        "DEFAULT_PERMISSION_CLASSES": [
-            "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
-        ],
+        "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
         "DEFAULT_AUTHENTICATION_CLASSES": [
             "rest_framework_simplejwt.authentication.JWTAuthentication",
-            "rest_framework.authentication.SessionAuthentication",
         ],
         "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
         "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
@@ -108,16 +105,15 @@ class GeneralSettings(BaseSettings):
     APP_NAME: str = "Note"
     BACKEND_HOST: AnyHttpUrl | str = "http://localhost:8000"
 
-    # @model_validator(mode="after")
-    # def patch_setting_if_debug(self) -> Self:
-    #     if self.DEBUG:
-    #         self.REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [
-    #             "rest_framework.renderers.JSONRenderer",
-    #             "rest_framework.renderers.BrowsableAPIRenderer",
-    #         ]
+    @model_validator(mode="after")
+    def patch_setting_if_debug(self) -> Self:
+        if self.DEBUG:
+            self.EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+        else:
+            self.EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-    #     return self
-    #     pass
+        return self
+        pass
 
 
 class EmailSettings(BaseSettings):
@@ -127,6 +123,8 @@ class EmailSettings(BaseSettings):
     EMAIL_HOST_USER: str | None = None
     EMAIL_HOST_PASSWORD: str | None = None
     EMAIL_USE_TLS: boolean = False
+
+    EMAIL_BACKEND: str = "django.core.mail.backends.console.EmailBackend"
 
     model_config = SettingsConfigDict(env_file=BASE_DIR / ".env", extra="allow")
 

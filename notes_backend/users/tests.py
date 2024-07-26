@@ -1,15 +1,12 @@
+from uuid import uuid4
+
 import pytest
 from django.urls import reverse
 from rest_framework import status
 
-from users.emails import send_signup_email
-from users.models import User
+from users.models import SignupToken, User
 
 # Create your tests here.
-
-
-def test_simple():
-    assert 1 + 1 == 2
 
 
 @pytest.mark.django_db
@@ -139,13 +136,7 @@ def test_send_email(mailoutbox):
     user = User.objects.create_user(
         username="testuser", email="testuser@example.com", password="testpass123"
     )
-
-    # Call the function to send the signup email
-    result = send_signup_email(user=user)
-
-    # Check that one email has been sent
-    assert result
-    assert len(mailoutbox) == 1
+    # mail automaticly send as post_save signal
 
     # Get the email from the outbox
     email = mailoutbox[0]
@@ -156,8 +147,60 @@ def test_send_email(mailoutbox):
     assert "testuser" in email.body  # Assuming the username is in the email body
     assert "best" in email.body.lower()  # Assuming 'welcome' is in the email body
 
+    mailoutbox = []
     # If you're sending HTML emails, you can check the HTML content too
     if email.alternatives:
         html_content = email.alternatives[0][0]
         assert "testuser" in html_content
         assert "welcome" in html_content.lower()
+
+
+@pytest.mark.django_db
+def test_account_verification_ok(client):
+    user = User.objects.create(
+        username="testuser",
+        password="testpassword123",
+        email="test@gmail.com",
+        is_active=False,
+    )
+    user.save()
+    token = str(user.token.token)  # type: ignore
+
+    url = reverse("email-verification", args=(token,))
+
+    response = client.get(url, content_type="application/json")
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["token"] == token
+    assert response.json()["user"]["is_active"]
+
+
+@pytest.mark.django_db
+def test_account_verification_404_token(client):
+    token = uuid4()
+    url = reverse("email-verification", args=(token,))
+    response = client.get(url, content_type="application/json")
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_account_verification_onetime(client):
+    user = User.objects.create(
+        username="testuser",
+        password="testpassword123",
+        email="test@gmail.com",
+        is_active=False,
+    )
+    user.save()
+    token = str(user.token.token)  # type: ignore
+
+    url = reverse("email-verification", args=(token,))
+
+    response = client.get(url, content_type="application/json")
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["token"] == token
+    assert response.json()["user"]["is_active"]
+
+    # Now token should be deleted
+
+    with pytest.raises(SignupToken.DoesNotExist):
+        SignupToken.objects.get(token=token)

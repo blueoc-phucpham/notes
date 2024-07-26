@@ -3,7 +3,7 @@ from django.core import exceptions
 from rest_framework import serializers
 
 from users.emails import send_signup_email
-from users.models import User
+from users.models import SignupToken, User
 
 
 class UserSignUpSerializer(serializers.ModelSerializer):
@@ -48,3 +48,12 @@ class UserSignUpSerializer(serializers.ModelSerializer):
             "deleted_at",
         ]
         read_only_fields = ["is_active", "created_at", "updated_at", "deleted_at"]
+
+
+class UserVerificationSerializer(serializers.ModelSerializer):
+    user = UserSignUpSerializer(read_only=True)
+
+    class Meta:
+        model = SignupToken
+        fields = ["token", "user"]
+        read_only_fields = ["token", "user"]

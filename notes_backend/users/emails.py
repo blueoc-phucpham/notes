@@ -5,11 +5,11 @@ from notes.settings import settings
 
 
 def send_signup_email(user) -> bool:
-    url = reverse("email-verification")
+    path = reverse("email-verification", args=(user.token.token,))
     context = {
         "app_name": settings.APP_NAME,
         "username": user.username,
-        "verification_link": f"{url}?token={user.token.token}",
+        "verification_link": f"{settings.BACKEND_HOST}{path}",
         "app_host": settings.BACKEND_HOST,
     }
 

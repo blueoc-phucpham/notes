@@ -1,12 +1,13 @@
 # Create your views here.
 
+from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from users.models import User
-from users.serializers import UserSignUpSerializer
+from users.models import SignupToken, User
+from users.serializers import UserSignUpSerializer, UserVerificationSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -19,6 +20,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class UserSignupView(APIView):
     permission_classes = [AllowAny]
+    serializer_class = UserSignUpSerializer
 
     def post(self, request):
         serializer = UserSignUpSerializer(data=request.data)
@@ -33,16 +35,15 @@ class UserSignupView(APIView):
 
 
 class UserEmailVerificationView(APIView):
-    def get(self, request):
-        token = request.query_params.get("token", None)
-        if not token:
-            return Response(
-                data={"token": "This query params is required"},
-                status=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            )
+    permission_classes = [AllowAny]
+    serializer_class = UserVerificationSerializer
 
-        return Response(
-            data={
-                "message": "Your account has been verified. You can login and start using Note now"
-            }
-        )
+    def get(self, request, token: str):
+        db_token = get_object_or_404(SignupToken, token=token)
+        db_token.user.is_active = True
+        db_token.user.save()
+        db_token.delete()  # one time token
+
+        serializer = UserVerificationSerializer(db_token)
+
+        return Response(data=serializer.data)
