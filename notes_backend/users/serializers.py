@@ -2,7 +2,21 @@ import django.contrib.auth.password_validation as validators
 from django.core import exceptions
 from rest_framework import serializers
 
-from users.models import SignupToken, User
+from users.models import Role, SignupToken, User
+
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = [
+            "id",
+            "label",
+            "permissions",
+            "created_at",
+            "updated_at",
+            "deleted_at",
+        ]
+        read_only_fields = ["id", "created_at", "updated_at", "deleted_at"]
 
 
 class UserSignUpSerializer(serializers.ModelSerializer):

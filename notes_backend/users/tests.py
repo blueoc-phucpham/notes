@@ -3,10 +3,24 @@ from uuid import uuid4
 import pytest
 from django.urls import reverse
 from rest_framework import status
+from rest_framework.test import APIClient
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from users.models import SignupToken, User
 
 # Create your tests here.
+
+
+@pytest.fixture
+def admin_client():
+    user = User.objects.create_superuser(
+        username="testuser", email="testuser@yop.com", password="js.sj"
+    )
+    client = APIClient()
+    refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
+    return client
 
 
 @pytest.mark.django_db
@@ -227,3 +241,31 @@ def test_user_can_login(client):
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["refresh"]
     assert response.json()["access"]
+
+
+# Role testing
+
+
+@pytest.mark.django_db
+def test_unauthenticated_user_role_list_api_401(client):
+    url = reverse("role-list")
+    response = client.get(url)
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    response = client.post(url)
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_unauthenticated_user_role_detail_api_401(client):
+    url = reverse("role-detail", args=(1,))
+    response = client.get(url)
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    response = client.post(url)
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    response = client.delete(url)
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED

@@ -1,9 +1,9 @@
 from django.core.exceptions import ValidationError
 from rest_framework import status, viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
 from core.models import Note
+from core.permissions import CustomNotePermission
 from core.serializers import NoteSerializer
 
 # Create your views here.
@@ -12,7 +12,7 @@ from core.serializers import NoteSerializer
 class NoteViewSet(viewsets.ModelViewSet):
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [CustomNotePermission]
 
     def perform_create(self, serializer):
         user = self.request.user

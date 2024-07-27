@@ -8,6 +8,8 @@ from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 from users.models import User
 
+from core.models import Note
+
 
 @pytest.fixture
 def api_client():
@@ -89,3 +91,199 @@ def test_create_note_exceed_10_notes(api_client):
 
     response = api_client.post(url, data=data, format="json")
     assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+@pytest.mark.django_db
+def test_view_note_ok(api_client):
+    data = {"title": "some note title", "content": "some test content"}
+
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+    user.save()
+    note.save()
+    url = reverse("note-detail", args=(note.id,))
+
+    response = api_client.get(url, format="json")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["title"] == note.title
+    assert response.json()["content"] == note.content
+
+
+@pytest.mark.django_db
+def test_view_note_401(client):
+    url = reverse("note-detail", args=(123,))
+    response = client.get(url, format="json")
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_view_note_404(api_client):
+    url = reverse("note-detail", args=(123,))
+    response = api_client.get(url, format="json")
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_update_note_ok():
+    data = {"title": "some note title", "content": "some test content"}
+    updated = {"title": "some updated title", "content": "some updated content"}
+
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+
+    url = reverse("note-detail", args=(note.id,))
+
+    client = APIClient()
+    refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
+    response = client.put(url, data=updated, format="json")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["title"] == updated["title"]
+    assert response.json()["content"] == updated["content"]
+    assert response.json()["version"] == 2
+
+
+@pytest.mark.django_db
+def test_update_note_404():
+    updated = {"title": "some updated title", "content": "some updated content"}
+    user = User.objects.create_user(username="test1", password="test1password123")
+
+    url = reverse("note-detail", args=(123,))
+
+    client = APIClient()
+    refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
+    response = client.put(url, data=updated, format="json")
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_update_note_blank_title():
+    data = {"title": "some note title", "content": "some test content"}
+    updated = {"title": "     ", "content": "some updated content"}
+
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+
+    url = reverse("note-detail", args=(note.id,))
+
+    client = APIClient()
+    refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
+    response = client.put(url, data=updated, format="json")
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+@pytest.mark.django_db
+def test_update_note_blank_content():
+    data = {"title": "some note title", "content": "some test content"}
+    updated = {"title": "some tilete", "content": "   "}
+
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+
+    url = reverse("note-detail", args=(note.id,))
+
+    client = APIClient()
+    refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
+    response = client.put(url, data=updated, format="json")
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+@pytest.mark.django_db
+def test_update_note_long_title(long_title):
+    data = {"title": "some note title", "content": "some test content"}
+    updated = {"title": long_title, "content": "   "}
+
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+
+    url = reverse("note-detail", args=(note.id,))
+
+    client = APIClient()
+    refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
+    response = client.put(url, data=updated, format="json")
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+@pytest.mark.django_db
+def test_update_note_not_author(api_client):
+    data = {"title": "some note title", "content": "some test content"}
+    updated = {"title": "some updated title", "content": "some updated content"}
+
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+
+    url = reverse("note-detail", args=(note.id,))
+
+    response = api_client.put(url, data=updated, format="json")
+
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+    assert note.version == 1
+
+
+@pytest.mark.django_db
+def test_delete_note_ok():
+    data = {"title": "some note title", "content": "some test content"}
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+
+    url = reverse("note-detail", args=(note.id,))
+
+    client = APIClient()
+    refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
+    response = client.delete(url, format="json")
+
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    with pytest.raises(Note.DoesNotExist):
+        Note.objects.get(pk=note.id)
+
+
+@pytest.mark.django_db
+def test_delete_note_twice():
+    data = {"title": "some note title", "content": "some test content"}
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+
+    url = reverse("note-detail", args=(note.id,))
+
+    client = APIClient()
+    refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
+    response = client.delete(url, format="json")
+    response = client.delete(url, format="json")
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+    with pytest.raises(Note.DoesNotExist):
+        Note.objects.get(pk=note.id)
+
+
+@pytest.mark.django_db
+def test_delete_note_not_author(api_client):
+    data = {"title": "some note title", "content": "some test content"}
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+
+    url = reverse("note-detail", args=(note.id,))
+
+    response = api_client.delete(url, format="json")
+
+    assert response.status_code == status.HTTP_403_FORBIDDEN

@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import User
+from users.models import Role, User
 
 from core.base import Base
 
@@ -18,3 +18,9 @@ class Note(Base):
             self.version = self.version + 1
 
         return super().save(*args, **kwargs)
+
+
+class NotePermission(Base):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    note = models.ForeignKey(Note, on_delete=models.CASCADE)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE)

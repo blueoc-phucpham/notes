@@ -2,12 +2,22 @@
 
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from users.models import SignupToken, User
-from users.serializers import UserSignUpSerializer, UserVerificationSerializer
+from users.models import Role, SignupToken, User
+from users.serializers import (
+    RoleSerializer,
+    UserSignUpSerializer,
+    UserVerificationSerializer,
+)
+
+
+class RoleViewSet(viewsets.ModelViewSet):
+    queryset = Role.objects.all()
+    serializer_class = RoleSerializer
+    permission_classes = [IsAdminUser]
 
 
 class UserViewSet(viewsets.ModelViewSet):
