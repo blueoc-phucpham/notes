@@ -8,12 +8,12 @@ register_converter(UUIDConverter, "uuid")
 
 
 urlpatterns = [
-    path("signup", UserSignupView.as_view(), name="user-signup"),
+    path("signup/", UserSignupView.as_view(), name="user-signup"),
     path(
-        "verify/<uuid:token>",
+        "verify/<uuid:token>/",
         UserEmailVerificationView.as_view(),
         name="email-verification",
     ),
-    path("login", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("refresh", TokenRefreshView.as_view(), name="token_refresh"),
+    path("login/", TokenObtainPairView.as_view(), name="user-login"),
+    path("refresh/", TokenRefreshView.as_view(), name="user-refresh"),
 ]

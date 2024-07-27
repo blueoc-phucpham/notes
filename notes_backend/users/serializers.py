@@ -2,7 +2,6 @@ import django.contrib.auth.password_validation as validators
 from django.core import exceptions
 from rest_framework import serializers
 
-from users.emails import send_signup_email
 from users.models import SignupToken, User
 
 
@@ -27,11 +26,8 @@ class UserSignUpSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         user.is_active = False
-        user.set_password(user.password)
+        # user.set_password(user.password)
         user.save()
-
-        # send email
-        send_signup_email(user=user)
 
         return user
 

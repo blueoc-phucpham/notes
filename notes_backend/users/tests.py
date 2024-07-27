@@ -204,3 +204,26 @@ def test_account_verification_onetime(client):
 
     with pytest.raises(SignupToken.DoesNotExist):
         SignupToken.objects.get(token=token)
+
+
+@pytest.mark.django_db
+def test_user_can_login(client):
+    user = User.objects.create_user(
+        username="testuser",
+        password="testpassword123",
+        email="test@gmail.com",
+        is_active=True,
+    )
+    user.save()
+
+    payload = {
+        "username": "testuser",
+        "password": "testpassword123",
+    }
+
+    url = reverse("user-login")
+    response = client.post(url, payload, content_type="application/json")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["refresh"]
+    assert response.json()["access"]
