@@ -1,9 +1,3 @@
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuLink,
-} from "~/components/ui/navigation-menu";
 import { Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
@@ -12,14 +6,6 @@ export default function HeaderBar() {
   const routes = [
     {
       label: "Note",
-      href: "/",
-    },
-    {
-      label: "About",
-      href: "/about",
-    },
-    {
-      label: "Docs",
       href: "/",
     },
   ];

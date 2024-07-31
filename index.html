@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pickup Modal List</title>
+    <style>
+        .list-item {
+            padding: 10px;
+            margin: 5px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .list-item:hover {
+            background-color: #e0e0e0;
+        }
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="list-container"></div>
+    <div id="modal" class="modal"></div>
+    <div id="overlay" class="overlay"></div>
+
+    <script>
+        const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+        const listContainer = document.getElementById('list-container');
+        const modal = document.getElementById('modal');
+        const overlay = document.getElementById('overlay');
+
+        items.forEach((item, index) => {
+            const listItem = document.createElement('div');
+            listItem.classList.add('list-item');
+            listItem.textContent = item;
+            listItem.addEventListener('click', () => pickupItem(listItem, item));
+            listContainer.appendChild(listItem);
+        });
+
+        function pickupItem(element, content) {
+            const rect = element.getBoundingClientRect();
+            const clone = element.cloneNode(true);
+            
+            clone.style.position = 'fixed';
+            clone.style.left = `${rect.left}px`;
+            clone.style.top = `${rect.top}px`;
+            clone.style.width = `${rect.width}px`;
+            clone.style.margin = '0';
+            clone.style.transition = 'all 0.3s ease';
+            
+            document.body.appendChild(clone);
+            
+            setTimeout(() => {
+                clone.style.transform = 'translate(-50%, -50%)';
+                clone.style.left = '50%';
+                clone.style.top = '50%';
+                clone.style.width = '200px';
+                clone.style.backgroundColor = 'white';
+                clone.style.boxShadow = '0 0 10px rgba(0,0,0,0.3)';
+                clone.style.zIndex = '1001';
+                overlay.style.display = 'block';
+            }, 50);
+
+            clone.addEventListener('click', () => {
+                document.body.removeChild(clone);
+                overlay.style.display = 'none';
+            });
+
+            overlay.addEventListener('click', () => {
+                document.body.removeChild(clone);
+                overlay.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>

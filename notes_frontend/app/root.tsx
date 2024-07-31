@@ -3,6 +3,7 @@ import type { LinksFunction } from "@remix-run/node";
 import stylesheet from "~/globals.css?url";
 import HeaderBar from "~/components/partials/NavigationBar";
 import Footer from "./components/partials/Footer";
+import { Toaster } from "~/components/ui/toaster";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -18,10 +19,11 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="flex flex-col min-h-full">
+      <body className="flex flex-col min-h-screen">
         <HeaderBar />
-        <main className="container mx-auto flex-grow">
+        <main className="container justify-center flex mx-auto flex-grow">
           <Outlet />
+          <Toaster></Toaster>
         </main>
         <Footer
           author="https://github.com/ppvan"
