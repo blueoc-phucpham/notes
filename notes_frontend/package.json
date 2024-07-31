@@ -1,0 +1,34 @@
+{
+  "name": "notes_frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node ./server.js",
+    "start": "cross-env NODE_ENV=production node ./server.js",
+    "typecheck": "tsc",
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@remix-run/express": "^2.10.3",
+    "@remix-run/node": "^2.10.3",
+    "@remix-run/react": "^2.10.3",
+    "cross-env": "^7.0.3",
+    "express": "^4.19.2",
+    "isbot": "^4.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^2.10.3",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "husky": "^9.1.4",
+    "typescript": "^5.5.4",
+    "vite": "^5.3.5"
+  }
+}
