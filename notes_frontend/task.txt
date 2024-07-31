@@ -1,4 +1,0 @@
-- Set up typescript
-- Set up husky
-- Data fetching an cors
-- write a test
