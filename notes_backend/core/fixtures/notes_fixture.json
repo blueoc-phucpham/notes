@@ -1,0 +1,122 @@
+[
+    {
+        "model": "core.note",
+        "pk": 1,
+        "fields": {
+            "title": "Grocery List",
+            "content": "Milk, eggs, bread, apples, chicken, pasta",
+            "version": 1,
+            "author": 1,
+            "created_at": "2024-08-01T12:01:00Z",
+            "updated_at": "2024-08-01T12:01:00Z"
+        }
+    },
+    {
+        "model": "core.note",
+        "pk": 2,
+        "fields": {
+            "title": "Meeting Agenda",
+            "content": "1. Project updates 2. Budget review 3. Team concerns 4. Next steps",
+            "version": 1,
+            "author": 1,
+            "created_at": "2024-08-01T12:01:00Z",
+            "updated_at": "2024-08-01T12:01:00Z"
+        }
+    },
+    {
+        "model": "core.note",
+        "pk": 3,
+        "fields": {
+            "title": "Book Recommendations",
+            "content": "1984 by George Orwell, To Kill a Mockingbird by Harper Lee, The Great Gatsby by F. Scott Fitzgerald",
+            "version": 1,
+            "author": 1,
+            "created_at": "2024-08-01T12:01:00Z",
+            "updated_at": "2024-08-01T12:01:00Z"
+        }
+    },
+    {
+        "model": "core.note",
+        "pk": 4,
+        "fields": {
+            "title": "Workout Plan",
+            "content": "Monday: Cardio, Tuesday: Upper body, Wednesday: Rest, Thursday: Lower body, Friday: Full body, Weekend: Yoga",
+            "version": 1,
+            "author": 1,
+            "created_at": "2024-08-01T12:01:00Z",
+            "updated_at": "2024-08-01T12:01:00Z"
+        }
+    },
+    {
+        "model": "core.note",
+        "pk": 5,
+        "fields": {
+            "title": "Gift Ideas",
+            "content": "Mom: Scarf, Dad: Grilling set, Sister: Cookbook, Brother: Headphones",
+            "version": 1,
+            "author": 1,
+            "created_at": "2024-08-01T12:01:00Z",
+            "updated_at": "2024-08-01T12:01:00Z"
+        }
+    },
+    {
+        "model": "core.note",
+        "pk": 6,
+        "fields": {
+            "title": "Travel Packing List",
+            "content": "Passport, chargers, toiletries, clothes, camera, first-aid kit",
+            "version": 1,
+            "author": 1,
+            "created_at": "2024-08-01T12:01:00Z",
+            "updated_at": "2024-08-01T12:01:00Z"
+        }
+    },
+    {
+        "model": "core.note",
+        "pk": 7,
+        "fields": {
+            "title": "Recipe: Chocolate Chip Cookies",
+            "content": "Ingredients: flour, sugar, butter, eggs, chocolate chips. Mix dry ingredients, cream butter and sugar, combine all, bake at 350°F for 10-12 minutes.",
+            "version": 1,
+            "author": 1,
+            "created_at": "2024-08-01T12:01:00Z",
+            "updated_at": "2024-08-01T12:01:00Z"
+        }
+    },
+    {
+        "model": "core.note",
+        "pk": 8,
+        "fields": {
+            "title": "Home Improvement Tasks",
+            "content": "Paint living room, fix leaky faucet, clean gutters, organize garage",
+            "version": 1,
+            "author": 1,
+            "created_at": "2024-08-01T12:01:00Z",
+            "updated_at": "2024-08-01T12:01:00Z"
+        }
+    },
+    {
+        "model": "core.note",
+        "pk": 9,
+        "fields": {
+            "title": "Language Learning Goals",
+            "content": "Learn 10 new words per week, practice speaking for 30 minutes daily, watch one foreign film per month",
+            "version": 1,
+            "author": 1,
+            "created_at": "2024-08-01T12:01:00Z",
+            "updated_at": "2024-08-01T12:01:00Z"
+        }
+    },
+    {
+        "model": "core.note",
+        "pk": 10,
+        "fields": {
+            "title": "Project Deadlines",
+            "content": "Research: June 15, First Draft: July 1, Revisions: July 15, Final Submission: August 1",
+            "version": 1,
+            "author": 1,
+            "created_at": "2024-08-01T12:01:00Z",
+            "updated_at": "2024-08-01T12:01:00Z"
+        }
+    }
+]
