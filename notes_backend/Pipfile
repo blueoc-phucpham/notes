@@ -12,6 +12,7 @@ pytest-django = "*"
 djangorestframework-simplejwt = "*"
 uvicorn = "*"
 drf-spectacular = "*"
+pytest-html = "*"
 
 [dev-packages]
 pytest = "*"
