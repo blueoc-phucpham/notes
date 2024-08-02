@@ -3,7 +3,12 @@ from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from users.converters import UUIDConverter
-from users.views import RoleViewSet, UserEmailVerificationView, UserSignupView
+from users.views import (
+    RoleViewSet,
+    UserEmailVerificationView,
+    UserProfileView,
+    UserSignupView,
+)
 
 register_converter(UUIDConverter, "uuid")
 
@@ -13,6 +18,7 @@ router.register("roles", RoleViewSet, basename="role")
 urlpatterns = [
     path("", include(router.urls)),
     path("signup/", UserSignupView.as_view(), name="user-signup"),
+    path("me/", UserProfileView.as_view(), name="user-me"),
     path(
         "verify/<uuid:token>/",
         UserEmailVerificationView.as_view(),

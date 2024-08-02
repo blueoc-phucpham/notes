@@ -60,6 +60,12 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         read_only_fields = ["is_active", "created_at", "updated_at", "deleted_at"]
 
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = "__all__"
+
+
 class UserVerificationSerializer(serializers.ModelSerializer):
     user = UserSignUpSerializer(read_only=True)
 

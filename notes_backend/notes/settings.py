@@ -40,12 +40,14 @@ class GeneralSettings(BaseSettings):
     DATABASES: DatabaseSettings = DatabaseSettings()
 
     ALLOWED_HOSTS: List[str] = []
+    CORS_ALLOW_ALL_ORIGINS: bool = False
     ROOT_URLCONF: str = "notes.urls"
     WSGI_APPLICATION: str = "notes.wsgi.application"
 
     INSTALLED_APPS: List[str] = [
         "users",
         "core",
+        "corsheaders",
         "rest_framework_simplejwt",
         "drf_spectacular",
         "rest_framework",
@@ -57,6 +59,7 @@ class GeneralSettings(BaseSettings):
     ]
 
     MIDDLEWARE: List[str] = [
+        "corsheaders.middleware.CorsMiddleware",
         "django.middleware.security.SecurityMiddleware",
         "django.contrib.sessions.middleware.SessionMiddleware",
         "django.middleware.common.CommonMiddleware",
@@ -109,11 +112,11 @@ class GeneralSettings(BaseSettings):
     def patch_setting_if_debug(self) -> Self:
         if self.DEBUG:
             self.EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+            self.CORS_ALLOW_ALL_ORIGINS = True
         else:
             self.EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
         return self
-        pass
 
 
 class EmailSettings(BaseSettings):

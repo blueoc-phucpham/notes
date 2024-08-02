@@ -1,14 +1,14 @@
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
+from django.db import connection
+from notes.settings import settings
 from rest_framework import status, viewsets
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
 from core.models import Note
 from core.permissions import CustomNotePermission
 from core.serializers import HealthCheckSerializer, NoteSerializer
-from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView
-from django.db import connection
-from django.core.cache import cache
 
 
 class NoteViewSet(viewsets.ModelViewSet):
@@ -30,6 +30,7 @@ class NoteViewSet(viewsets.ModelViewSet):
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class HealthCheckView(GenericAPIView):
     permission_classes = []  # Allow any user to access the health check
     serializer_class = HealthCheckSerializer
@@ -37,6 +38,7 @@ class HealthCheckView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         health_status = {
             "status": "healthy",
+            "debug": settings.DEBUG,
             "database": self.check_database(),
             "cache": self.check_cache(),
         }
@@ -45,7 +47,7 @@ class HealthCheckView(GenericAPIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.data, status=status.HTTP_503_SERVICE_UNAVAILABLE)
-    
+
     def check_database(self):
         try:
             with connection.cursor() as cursor:
@@ -54,6 +56,7 @@ class HealthCheckView(GenericAPIView):
                 return True
         except Exception:
             return False
+
     def check_cache(self):
         try:
             cache.set("health_check", "ok", 1)

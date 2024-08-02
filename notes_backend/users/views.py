@@ -2,13 +2,15 @@
 
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from users.models import Role, SignupToken, User
 from users.serializers import (
     RoleSerializer,
+    UserProfileSerializer,
     UserSignUpSerializer,
     UserVerificationSerializer,
 )
@@ -28,7 +30,20 @@ class UserViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
 
-class UserSignupView(APIView):
+class UserProfileView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserProfileSerializer
+
+    def get(self, request):
+        user = request.user
+        serializer = self.get_serializer(user)
+        return Response(
+            data=serializer.data,
+            status=status.HTTP_200_OK,
+        )
+
+
+class UserSignupView(GenericAPIView):
     permission_classes = [AllowAny]
     serializer_class = UserSignUpSerializer
 

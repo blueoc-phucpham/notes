@@ -13,6 +13,7 @@ djangorestframework-simplejwt = "*"
 uvicorn = "*"
 drf-spectacular = "*"
 pytest-html = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 pytest = "*"

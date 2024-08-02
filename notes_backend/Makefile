@@ -6,6 +6,9 @@ coverage:
 run:
 	python manage.py runserver
 
+start:
+	env DEBUG=False uvicorn notes.asgi:application
+
 app:
 	python manage.py startapp
 
