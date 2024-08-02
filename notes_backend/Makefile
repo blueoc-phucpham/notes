@@ -18,3 +18,7 @@ shell:
 
 admin:
 	python manage.py createsuperuser
+report:
+	pytest --html=report.html --self-contained-html
+	pytest --cov=. --cov-report html:cov_html
+	

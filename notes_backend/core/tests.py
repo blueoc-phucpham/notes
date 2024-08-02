@@ -1,6 +1,7 @@
 import random
 import string
 
+from django.db import connection
 import pytest
 from django.urls import reverse
 from rest_framework import status
@@ -9,6 +10,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from users.models import User
 
 from core.models import Note
+from django.core.cache import cache
 
 
 @pytest.fixture
@@ -287,3 +289,21 @@ def test_delete_note_not_author(api_client):
     response = api_client.delete(url, format="json")
 
     assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+def test_health_check_view(api_client):
+    url = reverse("health-check")
+
+    # Ensure database and cache are working
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT 1")
+
+    cache.set("test_key", "test_value", 1)
+
+    response = api_client.get(url)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["status"] == "healthy"
+    assert response.json()["database"] == True
+    assert response.json()["cache"] == True

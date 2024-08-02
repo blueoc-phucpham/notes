@@ -30,3 +30,8 @@ class NoteSerializer(serializers.ModelSerializer):
             "updated_at",
             "deleted_at",
         ]
+
+class HealthCheckSerializer(serializers.Serializer):
+    status = serializers.CharField()
+    database = serializers.BooleanField()
+    cache = serializers.BooleanField()
