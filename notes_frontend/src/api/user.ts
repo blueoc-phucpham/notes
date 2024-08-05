@@ -22,9 +22,22 @@ export type SignUpSchema = {
   password: string;
 };
 
+export type User = {
+  id: number;
+  username: string;
+  email: string;
+  is_active: boolean;
+  password: string;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date | null;
+};
+
 export type APIError = {
   detail: string;
 };
+
+
 
 export function handleError<T>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,14 +71,14 @@ export const loginRefreshFn = async (payload: Pick<JWTToken, "refresh">) => {
   return response.data;
 };
 
-export const signUpFn = async (payload: SignUpSchema) => {
-  const response = await API.post("/users/sign-up", payload);
+export const signUpFn = async (payload: SignUpSchema): Promise<User> => {
+  const response = await API.post("/users/sign-up/", payload);
 
   return response.data;
 };
 
 export const profileFn = async () => {
-  const response = await API.get("/users/me");
+  const response = await API.get("/users/me/");
 
   return response.data;
 };

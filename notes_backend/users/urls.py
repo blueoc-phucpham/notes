@@ -17,7 +17,7 @@ router.register("roles", RoleViewSet, basename="role")
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("signup/", UserSignupView.as_view(), name="user-signup"),
+    path("sign-up/", UserSignupView.as_view(), name="user-signup"),
     path("me/", UserProfileView.as_view(), name="user-me"),
     path(
         "verify/<uuid:token>/",
