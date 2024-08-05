@@ -10,10 +10,10 @@ import {
   User,
   signUpFn,
 } from "@/api/user";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export type SignUpValidationError = {
-    [key in keyof User]: string[];
+  [key in keyof User]: string[];
 };
 
 export const useLoginMutation = () => {
@@ -29,20 +29,49 @@ export const useLoginMutation = () => {
 };
 
 export const useSignUpMutation = () => {
-    const [error, setError] = useState<SignUpValidationError | null>(null);
-  
-    const mutation = useMutation<User, AxiosError<SignUpValidationError>, SignUpSchema>({
-      mutationFn: signUpFn,
-      onSuccess: (data) => {
-        console.log("Sign up successful", data);
-        setError(null);
-      },
-      onError: (error: Error) => {
-        if (axios.isAxiosError(error)) {
-          setError(error.response?.data as SignUpValidationError);
-        }
-      },
-    });
-  
-    return { mutation, error };
-  };
+  const [error, setError] = useState<SignUpValidationError | null>(null);
+
+  const mutation = useMutation<
+    User,
+    AxiosError<SignUpValidationError>,
+    SignUpSchema
+  >({
+    mutationFn: signUpFn,
+    onSuccess: (data) => {
+      console.log("Sign up successful", data);
+      setError(null);
+    },
+    onError: (error: Error) => {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data as SignUpValidationError);
+      }
+    },
+  });
+
+  return { mutation, error };
+};
+
+export const useAuth = () => {
+  const authKey = "access_token";
+
+  const [accessToken, setAccessToken] = useState<string | null>(() => {
+    return localStorage.getItem(authKey);
+  });
+
+  useEffect(() => {
+    function handleStorageChange(event: StorageEvent) {
+      if (event.key === authKey) {
+        setAccessToken(event.newValue);
+      }
+    }
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [accessToken]);
+
+
+  return {isAuthenticated: accessToken != null}
+};

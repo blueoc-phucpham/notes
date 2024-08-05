@@ -51,7 +51,9 @@ export default function Login() {
 
   const onSubmit = (values: LoginValues) => {
     loginMutation.mutate(values, {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        localStorage.setItem("access_token", data.access);
+        localStorage.setItem("refresh_token", data.refresh);
         navigate(from, { replace: true });
       },
     });

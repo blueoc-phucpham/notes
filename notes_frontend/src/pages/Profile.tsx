@@ -1,13 +1,12 @@
-import { useAuth } from "@/hooks/auth";
+import { useAuth } from "@/hooks/user";
 
 export default function Profile() {
-  const auth = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
     <div>
       <h3>Protected Page</h3>
-      <p>Welcome, {auth?.user?.username}!</p>
-      <button onClick={auth.logout}>Logout</button>
+      <p>Welcome, {isAuthenticated ? "ppvan" : "no one"}!</p>
     </div>
   );
 }
