@@ -9,7 +9,7 @@ export default function Layout() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div>
+    <div className="flex flex-col">
       <nav className="container flex items-center gap-4 py-4">
         <div>
           <Avatar>
@@ -36,12 +36,12 @@ export default function Layout() {
           </div>
         )}
       </nav>
-      <main className="container">
+      <main className="container flex-1 min-h-screen">
         <Outlet />
       </main>
       <Separator />
-      <footer className="container">
-        <div>Built by ppvan with love</div>
+      <footer className="container bg-muted h-24 flex items-center justify-center gap-24 text-muted-foreground">
+        <div>Powered by <Link to={"https://react.dev"} className="underline hover:text-primary ">React</Link></div>
       </footer>
     </div>
   );
