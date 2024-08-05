@@ -16,10 +16,14 @@ export const getNotesFn = async (): Promise<Note[]> => {
   return response.data;
 };
 
-export const updateNoteFn = async (
-  values: NoteUpdate
-): Promise<Note[]> => {
+export const updateNoteFn = async (values: NoteUpdate): Promise<Note> => {
   const response = await API.put(`/notes/${values.id}/`, values);
+
+  return response.data;
+};
+
+export const deleteNoteFn = async (id: number): Promise<void> => {
+  const response = await API.delete(`/notes/${id}/`);
 
   return response.data;
 };
