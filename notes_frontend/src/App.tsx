@@ -21,7 +21,14 @@ export default function App() {
       <div>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
+            <Route
+              index
+              element={
+                <RequireAuth>
+                  <Home />
+                </RequireAuth>
+              }
+            />
             <Route
               path="/me"
               element={

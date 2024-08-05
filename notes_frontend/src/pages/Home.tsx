@@ -1,16 +1,12 @@
-import {
-  useQuery,
-} from "@tanstack/react-query";
+import { getNotesFn } from "@/api/notes";
+import NoteCard from "@/components/mine/Note";
+import { useQuery } from "@tanstack/react-query";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 export default function Home() {
-  const { isPending, error, data, isFetching } = useQuery({
-    queryKey: ["repoData"],
-    queryFn: async () => {
-      const response = await fetch(
-        "https://api.github.com/repos/TanStack/query"
-      );
-      return await response.json();
-    },
+  const { isPending, error, data } = useQuery({
+    queryKey: ["notes"],
+    queryFn: getNotesFn,
   });
 
   if (isPending) return "Loading...";
@@ -18,13 +14,14 @@ export default function Home() {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div>
-      <h1>{data.full_name}</h1>
-      <p>{data.description}</p>
-      <strong>👀 {data.subscribers_count}</strong>{" "}
-      <strong>✨ {data.stargazers_count}</strong>{" "}
-      <strong>🍴 {data.forks_count}</strong>
-      <div>{isFetching ? "Updating..." : ""}</div>
+    <div className="p-4">
+      <ResponsiveMasonry>
+        <Masonry gutter="1.5rem">
+          {data.map((note) => (
+            <NoteCard {...note}></NoteCard>
+          ))}
+        </Masonry>
+      </ResponsiveMasonry>
     </div>
   );
 }

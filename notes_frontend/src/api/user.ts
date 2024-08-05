@@ -6,6 +6,51 @@ export const API = axios.create({
   baseURL: url,
 });
 
+API.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+API.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const refreshToken = localStorage.getItem("refresh_token");
+        const response = await API.post("/users/refresh/", {
+          refresh: refreshToken,
+        });
+
+        const { access: newAccessToken } = response.data;
+        localStorage.setItem("access_token", newAccessToken);
+
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+        return API(originalRequest);
+      } catch (refreshError) {
+        // Handle refresh token failure (e.g., logout user)
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        // Redirect to login page or dispatch a logout action
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 export type LoginSchema = {
   username: string;
   password: string;
@@ -22,22 +67,23 @@ export type SignUpSchema = {
   password: string;
 };
 
-export type User = {
+export type Base = {
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+};
+
+export type User = Base & {
   id: number;
   username: string;
   email: string;
   is_active: boolean;
   password: string;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at: Date | null;
 };
 
 export type APIError = {
   detail: string;
 };
-
-
 
 export function handleError<T>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
