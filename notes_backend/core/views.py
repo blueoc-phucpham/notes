@@ -12,9 +12,11 @@ from core.serializers import HealthCheckSerializer, NoteSerializer
 
 
 class NoteViewSet(viewsets.ModelViewSet):
-    queryset = Note.objects.all()
+    queryset = Note.objects.order_by("created_at", "id").all()
     serializer_class = NoteSerializer
     permission_classes = [CustomNotePermission]
+    ordering_fields = ["created_at", "id"]
+    ordering = ["id"]
 
     def perform_create(self, serializer):
         user = self.request.user

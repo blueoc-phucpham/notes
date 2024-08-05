@@ -8,9 +8,18 @@ export type Note = Base & {
   author: User;
 };
 
+export type NoteUpdate = { id: number } & Pick<Note, "title" | "content">;
+
 export const getNotesFn = async (): Promise<Note[]> => {
   const response = await API.get("/notes/");
-  console.log(response);
+
+  return response.data;
+};
+
+export const updateNoteFn = async (
+  values: NoteUpdate
+): Promise<Note[]> => {
+  const response = await API.put(`/notes/${values.id}/`, values);
 
   return response.data;
 };
