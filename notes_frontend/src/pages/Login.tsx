@@ -26,6 +26,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useAuth } from "@/hooks/auth";
+import { useLoginMutation } from "@/hooks/user";
 
 const schema = z.object({
   username: z
@@ -45,17 +46,17 @@ export default function Login() {
       password: "",
     },
   });
-  const { login } = useAuth();
+  const loginMutation = useLoginMutation();
   const navigate = useNavigate();
   const location = useLocation();
-
   const from = location.state?.from?.pathname || "/";
 
-  const [loginError, setLoginError] = useState<string | null>(null);
-
-  const onSubmit = async (values: LoginValues) => {
-    login(values.username, values.password);
-    navigate(from, { replace: true });
+  const onSubmit = (values: LoginValues) => {
+    loginMutation.mutate(values, {
+      onSuccess: () => {
+        navigate(from, { replace: true });
+      },
+    });
   };
 
   return (
@@ -72,11 +73,13 @@ export default function Login() {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="">
-              {loginError && (
+              {loginMutation.isError && (
                 <Alert variant="destructive" className="mb-4">
                   <CircleAlert className="h-4 w-4" />
                   <AlertTitle>Error</AlertTitle>
-                  <AlertDescription>{loginError}</AlertDescription>
+                  <AlertDescription>
+                    {loginMutation.error.message}
+                  </AlertDescription>
                 </Alert>
               )}
               <FormField
@@ -112,7 +115,7 @@ export default function Login() {
                 )}
               />
               <Button className="w-full mt-8" type="submit">
-                Log in
+                {loginMutation.isPending ? "Login In..." : "Log in"}
               </Button>
             </form>
           </Form>

@@ -9,7 +9,13 @@ export default function AuthProvider({
   const [user, setUser] = React.useState<User | null>(null);
 
   const login = async (username: string, password: string) => {
+
+    
+
+
+
     setUser({ username: "ppvan" });
+    throw new Error("invalid credentials");
   };
 
   const logout = () => {
