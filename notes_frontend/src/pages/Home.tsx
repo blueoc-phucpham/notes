@@ -1,4 +1,10 @@
-import { deleteNoteFn, getNotesFn, Note, updateNoteFn } from "@/api/notes";
+import {
+  createNoteFn,
+  deleteNoteFn,
+  getNotesFn,
+  Note,
+  updateNoteFn,
+} from "@/api/notes";
 import NoteCard from "@/components/mine/Note";
 import {
   AlertDialog,
@@ -18,7 +24,13 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -31,8 +43,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Description } from "@radix-ui/react-dialog";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
@@ -52,6 +64,12 @@ export default function Home() {
     queryFn: getNotesFn,
   });
   const queryClient = useQueryClient();
+
+  const createMutation = useMutation({
+    mutationFn: createNoteFn,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["notes"] }),
+  });
+
   const updateMutation = useMutation({
     mutationFn: updateNoteFn,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["notes"] }),
@@ -60,7 +78,7 @@ export default function Home() {
     mutationFn: deleteNoteFn,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["notes"] }),
   });
-  const noteUpdateForm = useForm<NoteValues>({
+  const noteForm = useForm<NoteValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       id: 0,
@@ -69,12 +87,21 @@ export default function Home() {
     },
   });
 
-  const [action, setAction] = useState<"idle" | "update" | "delete">("idle");
+  const [action, setAction] = useState<"idle" | "update" | "delete" | "create">(
+    "idle"
+  );
   const [targetNote, setTargetNote] = useState<Note | null>(null);
 
-  const onSubmit = (values: NoteValues) => {
+  const onUpdateFormSubmit = (values: NoteValues) => {
     updateMutation.mutate(values);
+    noteForm.reset();
     setAction("idle");
+  };
+
+  const onCreateFormSubmit = (values: NoteValues) => {
+    createMutation.mutate(values);
+    setAction("idle");
+    noteForm.reset();
   };
 
   const onDeleteConfirmed = () => {
@@ -86,9 +113,9 @@ export default function Home() {
 
   const onCardClick = (note: Note) => {
     setTargetNote(note);
-    noteUpdateForm.setValue("id", note.id);
-    noteUpdateForm.setValue("title", note.title ?? "");
-    noteUpdateForm.setValue("content", note.content ?? "");
+    noteForm.setValue("id", note.id);
+    noteForm.setValue("title", note.title ?? "");
+    noteForm.setValue("content", note.content ?? "");
     setAction("update");
   };
 
@@ -97,7 +124,69 @@ export default function Home() {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <div className="p-4">
+    <div className="p-4 flex flex-col gap-4 mt-10">
+      <div className="flex justify-end">
+        <Dialog
+          open={action === "create"}
+          onOpenChange={(open) => setAction(open ? "create" : "idle")}
+        >
+          <DialogTrigger asChild>
+            <Button
+              onClick={() => noteForm.reset()}
+              className="h-12 flex gap-3"
+              variant="default"
+            >
+              <Plus size={24} /> <span>Add New Note</span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogTitle>Create Note</DialogTitle>
+            <DialogDescription className="flex justify-between items-center">
+              <p>Write down your new idea</p>
+            </DialogDescription>
+            <Form {...noteForm}>
+              <form
+                onSubmit={noteForm.handleSubmit(onCreateFormSubmit)}
+                className="space-y-8 flex flex-col"
+              >
+                <FormField
+                  control={noteForm.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Title</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Note title" {...field} />
+                      </FormControl>
+                      <FormDescription>Your idea summary</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={noteForm.control}
+                  name="content"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Content</FormLabel>
+                      <FormControl>
+                        <Textarea rows={12} placeholder="Content" {...field} />
+                      </FormControl>
+                      <FormDescription>Your idea details</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit">
+                  {updateMutation.isPending ? "Creating ..." : "Create"}
+                </Button>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
+      </div>
+
       <ResponsiveMasonry>
         <Masonry gutter="1.5rem">
           {data.map((note) => (
@@ -132,19 +221,19 @@ export default function Home() {
       >
         <DialogContent>
           <DialogTitle>Update Note</DialogTitle>
-          <Description className="flex justify-between items-center">
+          <DialogDescription className="flex justify-between items-center">
             <p>Edits your exisiting note</p>
             <Button variant={"destructive"} onClick={() => setAction("delete")}>
               Delete
             </Button>
-          </Description>
-          <Form {...noteUpdateForm}>
+          </DialogDescription>
+          <Form {...noteForm}>
             <form
-              onSubmit={noteUpdateForm.handleSubmit(onSubmit)}
+              onSubmit={noteForm.handleSubmit(onUpdateFormSubmit)}
               className="space-y-8 flex flex-col"
             >
               <FormField
-                control={noteUpdateForm.control}
+                control={noteForm.control}
                 name="title"
                 render={({ field }) => (
                   <FormItem>
@@ -159,7 +248,7 @@ export default function Home() {
               />
 
               <FormField
-                control={noteUpdateForm.control}
+                control={noteForm.control}
                 name="content"
                 render={({ field }) => (
                   <FormItem>

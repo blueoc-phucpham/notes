@@ -49,7 +49,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Separator />
-      <footer className="container bg-muted h-24 flex items-center justify-center gap-24 text-muted-foreground">
+      <footer className="bg-muted h-24 flex items-center justify-center gap-24 text-muted-foreground">
         <div>Powered by <Link to={"https://react.dev"} className="underline hover:text-primary ">React</Link></div>
       </footer>
     </div>

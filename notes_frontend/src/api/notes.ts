@@ -9,9 +9,16 @@ export type Note = Base & {
 };
 
 export type NoteUpdate = { id: number } & Pick<Note, "title" | "content">;
+export type NoteCreate = Pick<Note, "title" | "content">;
 
 export const getNotesFn = async (): Promise<Note[]> => {
   const response = await API.get("/notes/");
+
+  return response.data;
+};
+
+export const createNoteFn = async (values: NoteCreate): Promise<Note> => {
+  const response = await API.post(`/notes/`, values);
 
   return response.data;
 };
