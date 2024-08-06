@@ -13,7 +13,7 @@ export default function Layout() {
       <nav className="container flex items-center gap-4 py-4">
         <div>
           <Avatar>
-            <AvatarImage src="https://github.com/ppvan.png" alt="@ppvan" />
+            <AvatarImage src="/logo.png" alt="@notes" />
             <AvatarFallback>ppvan</AvatarFallback>
           </Avatar>
         </div>
@@ -31,6 +31,15 @@ export default function Layout() {
             <div>
               <Button variant={"default"}>
                 <Link to="/auth/sign-up">Sign Up</Link>
+              </Button>
+            </div>
+          </div>
+        )}
+        {isAuthenticated && (
+          <div>
+            <div>
+              <Button variant={"secondary"}>
+                <Link to="/auth/logout">Log Out</Link>
               </Button>
             </div>
           </div>

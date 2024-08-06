@@ -158,17 +158,17 @@ Total story points: 66 points
 
 1. [x] [Design database](./tasks/note-1.md)
 2. [x] [Set up project](./tasks/note-2.md)
-3. [Write note CRUD api & unittest](./tasks/note-3.md)
-4. [Write note edit version history api & unittest](./tasks/note-4.md)
-5. [Write user sign up api & unittest](./tasks/note-5.md)
-6. [Write user login and logout api](./tasks/note-6.md)
-7. [Write user search by username and email api & unittest](./tasks/note-7.md)
-8. [Config send email service](./tasks/note-8.md)
-9. [Write email account verification api & unittest](./tasks/note-9.md)
-10. [Config admin account creation](./tasks/note-10.md)
-11. [admin] [write role CRUD API](./tasks/note-11.md)
-12. [admin] [write role assign/unassign api](./tasks/note-12.md)
-13. [Config user authorization](./tasks/note-13.md)
+3. [x] [Write note CRUD api & unittest](./tasks/note-3.md)
+4. [x] [Write note edit version history api & unittest](./tasks/note-4.md)
+5. [x] [Write user sign up api & unittest](./tasks/note-5.md)
+6. [x] [Write user login and logout api](./tasks/note-6.md)
+7. [x] [Write user search by username and email api & unittest](./tasks/note-7.md)
+8. [x] [Config send email service](./tasks/note-8.md)
+9. [x] [Write email account verification api & unittest](./tasks/note-9.md)
+10. [x] [Config admin account creation](./tasks/note-10.md)
+11. [x] [admin] [write role CRUD API](./tasks/note-11.md)
+12. [ ] [admin] [write role assign/unassign api](./tasks/note-12.md)
+13. [x] [Config user authorization](./tasks/note-13.md)
 
 #### Frontend
 
@@ -176,17 +176,17 @@ Total story points: 66 points
 
 **Story point**: 37 points
 
-14. [Draw basic mock up](./tasks/note-14.md)
-15. [Set up project](./tasks/note-15.md)
-16. [Config page routing & responsive design](./tasks/note-16.md)
-17. [login & sign up page](./tasks/note-17.md)
-18. [dashboard(note list) page](./tasks/note-18.md)
-19. [detail note page](./tasks/note-19.md)
-20. [edit history dialog](./tasks/note-20.md)
-21. [note update/delete dialog](./tasks/note-21.md)
-22. [\[admin\] user role list page](./tasks/note-22.md)
-23. [\[admin\] role assign dialog](./tasks/note-23.md)
-24. [\[admin\] user role update/delete dialog](./tasks/note-24.md)
+14. [x] [Draw basic mock up](./tasks/note-14.md)
+15. [x] [Set up project](./tasks/note-15.md)
+16. [x] [Config page routing & responsive design](./tasks/note-16.md)
+17. [x] [login & sign up page](./tasks/note-17.md)
+18. [x] [dashboard(note list) page](./tasks/note-18.md)
+19. [ ] [detail note page](./tasks/note-19.md)
+20. [ ] [edit history dialog](./tasks/note-20.md)
+21. [x] [note update/delete dialog](./tasks/note-21.md)
+22. [ ] [\[admin\] user role list page](./tasks/note-22.md)
+23. [ ] [\[admin\] role assign dialog](./tasks/note-23.md)
+24. [ ] [\[admin\] user role update/delete dialog](./tasks/note-24.md)
 
 
 ## Appendix
