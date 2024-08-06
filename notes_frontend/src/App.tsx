@@ -12,6 +12,7 @@ import {
   NonAuthenticateUserOnly,
   RequireAuth,
 } from "./components/mine/RequireAuth";
+import Logout from "./pages/Logout";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ export default function App() {
             />
 
             <Route path="/auth/sign-up" element={<SignUp />} />
+            <Route path="/auth/logout" element={<Logout />} />
           </Route>
         </Routes>
       </div>
