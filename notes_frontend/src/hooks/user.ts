@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 
 import {
@@ -9,6 +9,7 @@ import {
   SignUpSchema,
   User,
   signUpFn,
+  profileFn,
 } from "@/api/user";
 import { useEffect, useState } from "react";
 
@@ -58,6 +59,11 @@ export const useAuth = () => {
     return localStorage.getItem(authKey);
   });
 
+  const query = useQuery({
+    queryFn: profileFn,
+    queryKey: ["profile"],
+  });
+
   useEffect(() => {
     function handleStorageChange(event: StorageEvent) {
       if (event.key === authKey) {
@@ -72,6 +78,5 @@ export const useAuth = () => {
     };
   }, [accessToken]);
 
-
-  return {isAuthenticated: accessToken != null}
+  return { isAuthenticated: accessToken != null, user: query.data, isPending: query.isPending };
 };

@@ -78,12 +78,24 @@ export type User = Base & {
   username: string;
   email: string;
   is_active: boolean;
+  is_superuser: boolean;
   password: string;
 };
 
 export type APIError = {
   detail: string;
 };
+
+export type Permission = "view" | "edit" | "delete";
+
+export type Role = Base & {
+  id: number;
+  label: string;
+  permissions: Permission[];
+};
+
+export type RoleCreate = Pick<Role, "label" | "permissions">;
+export type RoleUpdate = Pick<Role, "id" | "label" | "permissions">;
 
 export function handleError<T>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -123,7 +135,7 @@ export const signUpFn = async (payload: SignUpSchema): Promise<User> => {
   return response.data;
 };
 
-export const profileFn = async () => {
+export const profileFn = async (): Promise<User> => {
   const response = await API.get("/users/me/");
 
   return response.data;
@@ -131,6 +143,30 @@ export const profileFn = async () => {
 
 export const verifiedEmailFn = async (token: string) => {
   const response = await API.get(`/users/verify/${token}/`);
+
+  return response.data;
+};
+
+export const roleListFn = async (): Promise<Role[]> => {
+  const response = await API.get("/users/roles/");
+
+  return response.data;
+};
+
+export const roleCreateFn = async (values: RoleCreate): Promise<Role> => {
+  const response = await API.post("/users/roles/", values);
+
+  return response.data;
+};
+
+export const roleUpdateFn = async (values: RoleUpdate): Promise<Role> => {
+    const response = await API.put(`/users/roles/${values.id}/`, values);
+  
+    return response.data;
+  };
+
+export const roleDeleteFn = async (values: Role): Promise<Role> => {
+  const response = await API.delete(`/users/roles/${values.id}/`);
 
   return response.data;
 };

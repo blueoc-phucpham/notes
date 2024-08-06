@@ -5,15 +5,16 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import AuthLayout from "./layout/AuthLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Profile from "./pages/Profile";
 import {
   NonAuthenticateUserOnly,
+  RequireAdmin,
   RequireAuth,
 } from "./components/mine/RequireAuth";
 import Logout from "./pages/Logout";
 import EmailVerified from "./pages/EmailVerified";
+import RolePage from "./admin/RolePage";
 
 const queryClient = new QueryClient();
 
@@ -44,7 +45,7 @@ export default function App() {
               element={<EmailVerified />}
             />
           </Route>
-          <Route path="/auth" element={<AuthLayout />}>
+          <Route path="/auth">
             <Route
               path="/auth/login"
               element={
@@ -59,6 +60,17 @@ export default function App() {
               element={<EmailVerified />}
             />
             <Route path="/auth/logout" element={<Logout />} />
+          </Route>
+
+          <Route path="/admin" element={<Layout></Layout>}>
+            <Route
+              path="/admin/roles"
+              element={
+                <RequireAdmin>
+                  <RolePage></RolePage>
+                </RequireAdmin>
+              }
+            ></Route>
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

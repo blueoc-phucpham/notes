@@ -61,6 +61,8 @@ class UserSignUpSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(style={"input_type": "password"}, write_only=True)
+
     class Meta:
         model = User
         fields = "__all__"
