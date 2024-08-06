@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 export default function AuthLayout() {
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-b from-slate-300 to-slate-100">
+    <div className="flex items-center justify-center h-screen">
       <Outlet />
       <Toaster />
     </div>

@@ -128,3 +128,9 @@ export const profileFn = async () => {
 
   return response.data;
 };
+
+export const verifiedEmailFn = async (token: string) => {
+  const response = await API.get(`/users/verify/${token}/`);
+
+  return response.data;
+};

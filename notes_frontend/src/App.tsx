@@ -13,6 +13,7 @@ import {
   RequireAuth,
 } from "./components/mine/RequireAuth";
 import Logout from "./pages/Logout";
+import EmailVerified from "./pages/EmailVerified";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +39,10 @@ export default function App() {
                 </RequireAuth>
               }
             />
-            <Route path="*" element={<NotFound />} />
+            <Route
+              path="/email-verification/:token"
+              element={<EmailVerified />}
+            />
           </Route>
           <Route path="/auth" element={<AuthLayout />}>
             <Route
@@ -49,10 +53,14 @@ export default function App() {
                 </NonAuthenticateUserOnly>
               }
             />
-
             <Route path="/auth/sign-up" element={<SignUp />} />
+            <Route
+              path="/auth/email-verification/:token"
+              element={<EmailVerified />}
+            />
             <Route path="/auth/logout" element={<Logout />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </QueryClientProvider>
