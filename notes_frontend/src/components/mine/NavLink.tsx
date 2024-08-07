@@ -1,8 +1,10 @@
 import { cn } from "@/lib/utils";
-import { Link, LinkProps } from "react-router-dom";
+import { NavLink as InnerNav, NavLinkProps } from "react-router-dom";
 
-type NavProps = LinkProps & React.RefAttributes<HTMLAnchorElement>;
+type NavProps = NavLinkProps & React.RefAttributes<HTMLAnchorElement>;
 
 export default function NavLink({ children, className, ...prop }: NavProps) {
-  return <Link className={cn("font-medium hover:underline", className)} {...prop}>{children}</Link>;
+
+
+  return <InnerNav className={(navData) => cn("font-medium hover:underline", className, navData.isActive && "underline")} {...prop}>{children}</InnerNav>;
 }

@@ -15,6 +15,8 @@ import {
 import Logout from "./pages/Logout";
 import EmailVerified from "./pages/EmailVerified";
 import RolePage from "./admin/RolePage";
+import AuthLayout from "./layout/AuthLayout";
+import Shared from "./pages/Shared";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +35,14 @@ export default function App() {
               }
             />
             <Route
+              path="/shared"
+              element={
+                <RequireAuth>
+                  <Shared />
+                </RequireAuth>
+              }
+            />
+            <Route
               path="/me"
               element={
                 <RequireAuth>
@@ -45,7 +55,7 @@ export default function App() {
               element={<EmailVerified />}
             />
           </Route>
-          <Route path="/auth">
+          <Route path="/auth" element={<AuthLayout />}>
             <Route
               path="/auth/login"
               element={

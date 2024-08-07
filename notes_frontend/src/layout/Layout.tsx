@@ -27,7 +27,7 @@ export default function Layout() {
           <NavLink to="/">My Notes</NavLink>
         </div>
 
-        {isAuthenticated && (
+        {isAuthenticated && !user?.is_superuser && (
           <div>
             <NavLink to="/shared/">Share with me</NavLink>
           </div>

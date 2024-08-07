@@ -17,6 +17,12 @@ export const getNotesFn = async (): Promise<Note[]> => {
   return response.data;
 };
 
+export const getSharedNotesFn = async (): Promise<Note[]> => {
+  const response = await API.get("/notes/shared/");
+
+  return response.data;
+};
+
 export const createNoteFn = async (values: NoteCreate): Promise<Note> => {
   const response = await API.post(`/notes/`, values);
 
