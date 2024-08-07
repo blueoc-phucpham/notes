@@ -86,6 +86,12 @@ export type APIError = {
   detail: string;
 };
 
+export type AssignPermission = {
+  role: number;
+  user: number;
+  note: number;
+};
+
 export type Permission = "view" | "edit" | "delete";
 
 export type Role = Base & {
@@ -147,6 +153,14 @@ export const verifiedEmailFn = async (token: string) => {
   return response.data;
 };
 
+export const userListFn = async (): Promise<
+  Pick<User, "id" | "username">[]
+> => {
+  const response = await API.get("/users/search/");
+
+  return response.data;
+};
+
 export const roleListFn = async (): Promise<Role[]> => {
   const response = await API.get("/users/roles/");
 
@@ -160,13 +174,19 @@ export const roleCreateFn = async (values: RoleCreate): Promise<Role> => {
 };
 
 export const roleUpdateFn = async (values: RoleUpdate): Promise<Role> => {
-    const response = await API.put(`/users/roles/${values.id}/`, values);
-  
-    return response.data;
-  };
+  const response = await API.put(`/users/roles/${values.id}/`, values);
+
+  return response.data;
+};
 
 export const roleDeleteFn = async (values: Role): Promise<Role> => {
   const response = await API.delete(`/users/roles/${values.id}/`);
+
+  return response.data;
+};
+
+export const assignRoleFn = async (values: AssignPermission): Promise<AssignPermission> => {
+  const response = await API.post(`/notes/assign-permission/`, values);
 
   return response.data;
 };

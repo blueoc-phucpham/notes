@@ -48,10 +48,17 @@ export default function Layout() {
           </div>
         )}
         {user?.is_superuser && (
-          <div className="mx-10">
+          <div className="mx-5">
             <NavLink to="/admin/roles">Roles</NavLink>
           </div>
         )}
+
+        {user?.is_superuser && (
+          <div className="mx-5">
+            <NavLink to="/admin/permissions">Assign</NavLink>
+          </div>
+        )}
+
         {isAuthenticated && (
           <div>
             <Popover>

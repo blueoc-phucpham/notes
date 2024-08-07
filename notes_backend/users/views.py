@@ -1,6 +1,5 @@
 # Create your views here.
 
-from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.generics import GenericAPIView
@@ -39,16 +38,7 @@ class UserAssignSupport(GenericAPIView):
     serializer_class = UserSearchSerializer
 
     def get(self, request):
-        search_query = request.query_params.get("search", "")
-        limit = int(request.query_params.get("limit", 10))  # Default to 10 results
-
-        if search_query:
-            users = User.objects.filter(
-                Q(username__istartswith=search_query)
-                | Q(email__istartswith=search_query)
-            ).order_by("username")[:limit]
-        else:
-            users = User.objects.none()
+        users = User.objects.all()
 
         serializer = self.get_serializer(users, many=True)
         return Response(

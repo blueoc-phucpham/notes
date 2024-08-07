@@ -6,7 +6,6 @@ from notes.settings import settings
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import GenericAPIView
-from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from core.models import Note, NotePermission
@@ -27,8 +26,16 @@ class NoteViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+
         if user.is_superuser:
             return Note.objects.all()
+
+        if self.request.method == "GET":
+            return (
+                Note.objects.filter(Q(author=user))
+                .distinct()
+                .order_by("created_at", "id")
+            )
 
         return (
             Note.objects.filter(Q(author=user) | Q(notepermission__user=user))
@@ -60,7 +67,6 @@ class NoteViewSet(viewsets.ModelViewSet):
 
 class NoteAssign(GenericAPIView):
     serializer_class = NotePermissionSerializer
-    permission_classes = [IsAdminUser]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

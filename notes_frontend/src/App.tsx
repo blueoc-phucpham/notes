@@ -17,6 +17,7 @@ import EmailVerified from "./pages/EmailVerified";
 import RolePage from "./admin/RolePage";
 import AuthLayout from "./layout/AuthLayout";
 import Shared from "./pages/Shared";
+import AssignPermission from "./pages/AssignPermission";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +79,14 @@ export default function App() {
               element={
                 <RequireAdmin>
                   <RolePage></RolePage>
+                </RequireAdmin>
+              }
+            ></Route>
+            <Route
+              path="/admin/permissions"
+              element={
+                <RequireAdmin>
+                  <AssignPermission></AssignPermission>
                 </RequireAdmin>
               }
             ></Route>
