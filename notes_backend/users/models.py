@@ -16,7 +16,12 @@ PERMISSION_CHOICES = [
 
 class User(AbstractUser, Base):
     email = models.EmailField(unique=True)
-    pass
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["username"]),
+            models.Index(fields=["email"]),
+        ]
 
 
 class SignupToken(Base):

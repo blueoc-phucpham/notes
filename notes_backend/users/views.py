@@ -1,5 +1,6 @@
 # Create your views here.
 
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import status, viewsets
 from rest_framework.generics import GenericAPIView
@@ -11,6 +12,7 @@ from users.models import Role, SignupToken, User
 from users.serializers import (
     RoleSerializer,
     UserProfileSerializer,
+    UserSearchSerializer,
     UserSignUpSerializer,
     UserVerificationSerializer,
 )
@@ -28,6 +30,31 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         return super().create(request, *args, **kwargs)
+
+
+class UserAssignSupport(GenericAPIView):
+    """A view to support searching users by username"""
+
+    permission_classes = [IsAdminUser]
+    serializer_class = UserSearchSerializer
+
+    def get(self, request):
+        search_query = request.query_params.get("search", "")
+        limit = int(request.query_params.get("limit", 10))  # Default to 10 results
+
+        if search_query:
+            users = User.objects.filter(
+                Q(username__istartswith=search_query)
+                | Q(email__istartswith=search_query)
+            ).order_by("username")[:limit]
+        else:
+            users = User.objects.none()
+
+        serializer = self.get_serializer(users, many=True)
+        return Response(
+            data=serializer.data,
+            status=status.HTTP_200_OK,
+        )
 
 
 class UserProfileView(GenericAPIView):

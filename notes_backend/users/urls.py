@@ -5,6 +5,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from users.converters import UUIDConverter
 from users.views import (
     RoleViewSet,
+    UserAssignSupport,
     UserEmailVerificationView,
     UserProfileView,
     UserSignupView,
@@ -26,4 +27,5 @@ urlpatterns = [
     ),
     path("login/", TokenObtainPairView.as_view(), name="user-login"),
     path("refresh/", TokenRefreshView.as_view(), name="user-refresh"),
+    path("search/", UserAssignSupport.as_view(), name="user-search"),
 ]

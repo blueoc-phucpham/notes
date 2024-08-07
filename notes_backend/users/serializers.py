@@ -68,6 +68,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class UserSearchSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(style={"input_type": "password"}, write_only=True)
+
+    class Meta:
+        model = User
+        fields = "__all__"
+
+
 class UserVerificationSerializer(serializers.ModelSerializer):
     user = UserSignUpSerializer(read_only=True)
 
