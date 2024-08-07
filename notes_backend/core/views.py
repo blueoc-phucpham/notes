@@ -1,14 +1,21 @@
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import connection
+from django.db.models import Q
 from notes.settings import settings
 from rest_framework import status, viewsets
+from rest_framework.decorators import action
 from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
-from core.models import Note
+from core.models import Note, NotePermission
 from core.permissions import CustomNotePermission
-from core.serializers import HealthCheckSerializer, NoteSerializer
+from core.serializers import (
+    HealthCheckSerializer,
+    NotePermissionSerializer,
+    NoteSerializer,
+)
 
 
 class NoteViewSet(viewsets.ModelViewSet):
@@ -17,6 +24,17 @@ class NoteViewSet(viewsets.ModelViewSet):
     permission_classes = [CustomNotePermission]
     ordering_fields = ["created_at", "id"]
     ordering = ["id"]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_superuser:
+            return Note.objects.all()
+
+        return (
+            Note.objects.filter(Q(author=user) | Q(notepermission__user=user))
+            .distinct()
+            .order_by("created_at", "id")
+        )
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -31,6 +49,68 @@ class NoteViewSet(viewsets.ModelViewSet):
             return super().create(request, *args, **kwargs)
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=["GET"])
+    def shared(self, request):
+        user = request.user
+        shared_notes = Note.objects.filter(notepermission__user=user).distinct()
+        serializer = self.get_serializer(shared_notes, many=True)
+        return Response(serializer.data)
+
+
+class NoteAssign(GenericAPIView):
+    serializer_class = NotePermissionSerializer
+    permission_classes = [IsAdminUser]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data["user"]
+            note = serializer.validated_data["note"]
+            role = serializer.validated_data["role"]
+
+            # Check if a permission already exists for this user and note
+            permission, created = NotePermission.objects.update_or_create(
+                user=user, note=note, defaults={"role": role}
+            )
+
+            if created:
+                message = "Permission assigned successfully"
+                status_code = status.HTTP_201_CREATED
+            else:
+                message = "Permission updated successfully"
+                status_code = status.HTTP_200_OK
+
+            return Response(
+                {
+                    "message": message,
+                    "permission": self.get_serializer(permission).data,
+                },
+                status=status_code,
+            )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data["user"]
+            note = serializer.validated_data["note"]
+
+            try:
+                permission = NotePermission.objects.get(user=user, note=note)
+                permission.delete()
+                return Response(
+                    {"message": "Permission removed successfully"},
+                    status=status.HTTP_200_OK,
+                )
+            except NotePermission.DoesNotExist:
+                return Response(
+                    {"message": "Permission does not exist"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class HealthCheckView(GenericAPIView):

@@ -1,7 +1,8 @@
 from rest_framework import serializers
+from users.models import Role, User
 from users.serializers import UserSignUpSerializer
 
-from core.models import Note
+from core.models import Note, NotePermission
 
 
 class NoteSerializer(serializers.ModelSerializer):
@@ -37,3 +38,30 @@ class HealthCheckSerializer(serializers.Serializer):
     database = serializers.BooleanField()
     debug = serializers.BooleanField()
     cache = serializers.BooleanField()
+
+
+class NotePermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NotePermission
+        fields = ["id", "user", "note", "role"]
+
+    def validate(self, data):
+        # Ensure the note exists
+        try:
+            Note.objects.get(pk=data["note"].id)
+        except Note.DoesNotExist:
+            raise serializers.ValidationError("The specified note does not exist.")
+
+        # Ensure the user exists
+        try:
+            User.objects.get(pk=data["user"].id)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("The specified user does not exist.")
+
+        # Ensure the role exists
+        try:
+            Role.objects.get(pk=data["role"].id)
+        except Role.DoesNotExist:
+            raise serializers.ValidationError("The specified role does not exist.")
+
+        return data

@@ -4,25 +4,17 @@ from core.models import NotePermission
 
 
 class CustomNotePermission(permissions.BasePermission):
-    def has_permission(self, request, view):
-        # Allow all authenticated users to view
-        return request.user.is_authenticated
-
     def has_object_permission(self, request, view, obj):
-        # Allow all authenticated users to view
-        if request.method in permissions.SAFE_METHODS:
-            return request.user.is_authenticated
-
-        # Allow admins to edit/delete
-        if request.user.is_staff:
+        # Superusers can do anything
+        if request.user.is_superuser:
             return True
 
-        # Allow author to edit/delete
-        if request.user == obj.author:
+        # Check if the user is the author
+        if obj.author == request.user:
             return True
 
-        # Check if user has specific permissions for this object
-        try:
+        # For shared notes, check permissions
+        if request.method in ["PUT", "PATCH", "DELETE"]:
             note_permissions = NotePermission.objects.filter(
                 user=request.user, note=obj
             )
@@ -32,16 +24,16 @@ class CustomNotePermission(permissions.BasePermission):
 
             if request.method in ["PUT", "PATCH"]:
                 return any(
-                    ["edit" in role_permission for role_permission in role_permissions]
+                    "edit" in role_permission for role_permission in role_permissions
                 )
+
             if request.method == "DELETE":
                 return any(
-                    [
-                        "delete" in role_permission
-                        for role_permission in role_permissions
-                    ]
+                    "delete" in role_permission for role_permission in role_permissions
                 )
-        except NotePermission.DoesNotExist:
-            return False
+
+        # For GET requests, allow if the user has any permission on the note
+        if request.method in permissions.SAFE_METHODS:
+            return NotePermission.objects.filter(user=request.user, note=obj).exists()
 
         return False
