@@ -1,12 +1,18 @@
 import NavLink from "@/components/mine/NavLink";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/hooks/user";
+import { LogOutIcon } from "lucide-react";
 import { Link, Outlet } from "react-router-dom";
 
 export default function Layout() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <div className="flex flex-col">
@@ -18,8 +24,14 @@ export default function Layout() {
           </Avatar>
         </div>
         <div>
-          <NavLink to="/">Notes</NavLink>
+          <NavLink to="/">My Notes</NavLink>
         </div>
+
+        {isAuthenticated && (
+          <div>
+            <NavLink to="/shared/">Share with me</NavLink>
+          </div>
+        )}
         <div className="flex-grow"></div>
         {!isAuthenticated && (
           <div>
@@ -35,13 +47,32 @@ export default function Layout() {
             </div>
           </div>
         )}
+        {user?.is_superuser && (
+          <div className="mx-10">
+            <NavLink to="/admin/roles">Roles</NavLink>
+          </div>
+        )}
         {isAuthenticated && (
           <div>
-            <div>
-              <Button variant={"secondary"}>
-                <Link to="/auth/logout">Log Out</Link>
-              </Button>
-            </div>
+            <Popover>
+              <PopoverTrigger>
+                <Avatar>
+                  <AvatarFallback>
+                    {user?.username.slice(0, 2).toUpperCase() ?? "GT"}
+                  </AvatarFallback>
+                </Avatar>
+              </PopoverTrigger>
+              <PopoverContent className="w-fit">
+                <div>
+                  <Button variant={"secondary"}>
+                    <Link className="flex gap-2 items-center" to="/auth/logout">
+                      <LogOutIcon />
+                      <span>Log Out</span>
+                    </Link>
+                  </Button>
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
         )}
       </nav>
@@ -50,7 +81,15 @@ export default function Layout() {
       </main>
       <Separator />
       <footer className="bg-muted h-24 flex items-center justify-center gap-24 text-muted-foreground">
-        <div>Powered by <Link to={"https://react.dev"} className="underline hover:text-primary ">React</Link></div>
+        <div>
+          Powered by{" "}
+          <Link
+            to={"https://react.dev"}
+            className="underline hover:text-primary "
+          >
+            React
+          </Link>
+        </div>
       </footer>
     </div>
   );
