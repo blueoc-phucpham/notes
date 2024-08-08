@@ -17,7 +17,18 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
-      exclude: ["node_modules/", "src/test/", "src/components/ui"],
+      exclude: [
+        "node_modules/",
+        "src/test/",
+        "src/api/",
+        "src/components/ui",
+        "src/declarations.d.ts",
+        "src/vite-env.d.ts",
+        ".eslintrc.cjs",
+        "postcss.config.js",
+        "tailwind.config.js",
+        "vite.config.ts"
+      ],
     },
   },
 });

@@ -6,7 +6,6 @@ import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Profile from "./pages/Profile";
 import {
   NonAuthenticateUserOnly,
   RequireAdmin,
@@ -40,14 +39,6 @@ export default function App() {
               element={
                 <RequireAuth>
                   <Shared />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/me"
-              element={
-                <RequireAuth>
-                  <Profile />
                 </RequireAuth>
               }
             />

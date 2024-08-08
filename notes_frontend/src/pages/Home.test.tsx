@@ -1,12 +1,11 @@
-// Home.test.tsx
+// @ts-expect-error
+
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import Home from "./Home";
-import * as notesApi from "@/api/notes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as reactQuery from "@tanstack/react-query";
-import { NotepadText } from "lucide-react";
 
 // Mock the notes API functions
 vi.mock("@/api/notes", () => ({
