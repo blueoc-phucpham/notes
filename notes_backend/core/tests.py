@@ -1,16 +1,16 @@
 import random
 import string
 
-from django.db import connection
 import pytest
+from django.core.cache import cache
+from django.db import connection
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
-from users.models import User
+from users.models import Role, User
 
-from core.models import Note
-from django.core.cache import cache
+from core.models import Note, NotePermission
 
 
 @pytest.fixture
@@ -20,6 +20,19 @@ def api_client():
     )
     client = APIClient()
     refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
+    return client
+
+
+@pytest.fixture
+def admin_client():
+    admin = User.objects.create_superuser(
+        username="admin-tester", email="admin@example.com", password="test1password123"
+    )
+
+    client = APIClient()
+    refresh = RefreshToken.for_user(admin)
     client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
 
     return client
@@ -99,7 +112,7 @@ def test_create_note_exceed_10_notes(api_client):
 def test_view_note_ok(api_client):
     data = {"title": "some note title", "content": "some test content"}
 
-    user = User.objects.create_user(username="test1", password="test1password123")
+    user = User.objects.get(username="testuser")
     note = Note.objects.create(**data, author=user)
     user.save()
     note.save()
@@ -110,6 +123,48 @@ def test_view_note_ok(api_client):
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["title"] == note.title
     assert response.json()["content"] == note.content
+
+
+@pytest.mark.django_db
+def test_view_note_notfound_if_not_author(api_client):
+    data = {"title": "some note title", "content": "some test content"}
+
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+    user.save()
+    note.save()
+    url = reverse("note-detail", args=(note.id,))
+
+    response = api_client.get(url, format="json")
+
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_view_shared_note_if_not_author(api_client):
+    data = {"title": "some note title", "content": "some test content"}
+
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+    role = Role.objects.create(label="viewer", permissions=["view"])
+    guess = User.objects.get(username="testuser")
+
+    # Create the permission
+    perm = NotePermission.objects.create(user=guess, note=note, role=role)
+
+    perm.save()
+    user.save()
+    note.save()
+    url = reverse("note-shared")
+
+    response = api_client.get(url, format="json")
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.json()) == 1
+
+    data = response.json()[0]
+
+    assert data["title"] == note.title
+    assert data["content"] == note.content
 
 
 @pytest.mark.django_db
@@ -140,6 +195,76 @@ def test_update_note_ok():
 
     client = APIClient()
     refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
+    response = client.put(url, data=updated, format="json")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["title"] == updated["title"]
+    assert response.json()["content"] == updated["content"]
+    assert response.json()["version"] == 2
+
+
+@pytest.mark.django_db
+def test_update_note_if_has_edit_role_ok(api_client):
+    data = {"title": "some note title", "content": "some test content"}
+    updated = {"title": "some updated title", "content": "some updated content"}
+
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+    guess = User.objects.get(username="testuser")
+    role = Role.objects.create(label="viewer", permissions=["view", "edit"])
+
+    # Create the permission
+    perm = NotePermission.objects.create(user=guess, note=note, role=role)
+    perm.save()
+
+    url = reverse("note-detail", args=(note.id,))
+
+    response = api_client.put(url, data=updated, format="json")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["title"] == updated["title"]
+    assert response.json()["content"] == updated["content"]
+    assert response.json()["version"] == 2
+
+
+@pytest.mark.django_db
+def test_update_note_if_not_has_edit_role_failed(api_client):
+    data = {"title": "some note title", "content": "some test content"}
+    updated = {"title": "some updated title", "content": "some updated content"}
+
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+    guess = User.objects.get(username="testuser")
+    role = Role.objects.create(label="viewer", permissions=["view"])
+
+    # Create the permission
+    perm = NotePermission.objects.create(user=guess, note=note, role=role)
+    perm.save()
+
+    url = reverse("note-detail", args=(note.id,))
+
+    response = api_client.put(url, data=updated, format="json")
+
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+def test_update_note_admin_can_do_anything():
+    data = {"title": "some note title", "content": "some test content"}
+    updated = {"title": "some updated title", "content": "some updated content"}
+
+    user = User.objects.create_user(username="test1", password="test1password123")
+    admin = User.objects.create_superuser(
+        username="admin-tester", email="admin@example.com", password="test1password123"
+    )
+    note = Note.objects.create(**data, author=user)
+
+    url = reverse("note-detail", args=(note.id,))
+
+    client = APIClient()
+    refresh = RefreshToken.for_user(admin)
     client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
 
     response = client.put(url, data=updated, format="json")
@@ -235,7 +360,7 @@ def test_update_note_not_author(api_client):
 
     response = api_client.put(url, data=updated, format="json")
 
-    assert response.status_code == status.HTTP_403_FORBIDDEN
+    assert response.status_code == status.HTTP_404_NOT_FOUND
     assert note.version == 1
 
 
@@ -288,7 +413,47 @@ def test_delete_note_not_author(api_client):
 
     response = api_client.delete(url, format="json")
 
-    assert response.status_code == status.HTTP_403_FORBIDDEN
+    assert response.status_code == status.HTTP_404_NOT_FOUND
+
+
+@pytest.mark.django_db
+def test_delete_note_not_author_but_has_delete_role(api_client):
+    data = {"title": "some note title", "content": "some test content"}
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+
+    guess = User.objects.get(username="testuser")
+    role = Role.objects.create(label="viewer", permissions=["delete"])
+
+    # Create the permission
+    perm = NotePermission.objects.create(user=guess, note=note, role=role)
+    perm.save()
+
+    url = reverse("note-detail", args=(note.id,))
+
+    response = api_client.delete(url, format="json")
+
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+
+
+@pytest.mark.django_db
+def test_delete_note_admin(api_client):
+    data = {"title": "some note title", "content": "some test content"}
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+    admin = User.objects.create_superuser(
+        username="admin-tester", email="admin@example.com", password="test1password123"
+    )
+
+    client = APIClient()
+    refresh = RefreshToken.for_user(admin)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
+    url = reverse("note-detail", args=(note.id,))
+
+    response = client.delete(url, format="json")
+
+    assert response.status_code == status.HTTP_204_NO_CONTENT
 
 
 @pytest.mark.django_db
@@ -305,5 +470,107 @@ def test_health_check_view(api_client):
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["status"] == "healthy"
-    assert response.json()["database"] == True
-    assert response.json()["cache"] == True
+    assert response.json()["database"]
+    assert response.json()["cache"]
+
+
+@pytest.mark.django_db
+def test_assign_role(admin_client):
+    data = {"title": "some note title", "content": "some test content"}
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+    role = Role.objects.create(label="test", permissions=["view"])
+
+    url = reverse("assign-note-permission")
+    payload = {"user": user.id, "note": note.id, "role": role.id}
+
+    response = admin_client.post(url, payload, format="json")
+
+    assert response.status_code == status.HTTP_201_CREATED
+
+
+@pytest.mark.django_db
+def test_update_assign_role(admin_client):
+    data = {"title": "some note title", "content": "some test content"}
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+    role = Role.objects.create(label="test", permissions=["view"])
+    other = Role.objects.create(label="test1", permissions=["view", "edit"])
+
+    NotePermission.objects.create(user=user, note=note, role=role)
+
+    url = reverse("assign-note-permission")
+    payload = {"user": user.id, "note": note.id, "role": other.id}
+
+    response = admin_client.post(url, payload, format="json")
+
+    assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
+def test_update_assign_role_not_exist(admin_client):
+    data = {"title": "some note title", "content": "some test content"}
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+    role = Role.objects.create(label="test", permissions=["view"])
+
+    NotePermission.objects.create(user=user, note=note, role=role)
+
+    url = reverse("assign-note-permission")
+    payload = {"user": user.id, "note": note.id, "role": 123}
+
+    response = admin_client.post(url, payload, format="json")
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+@pytest.mark.django_db
+def test_update_assign_user_not_exist(admin_client):
+    data = {"title": "some note title", "content": "some test content"}
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+    role = Role.objects.create(label="test", permissions=["view"])
+
+    NotePermission.objects.create(user=user, note=note, role=role)
+
+    url = reverse("assign-note-permission")
+    payload = {"user": 123, "note": note.id, "role": role.id}
+
+    response = admin_client.post(url, payload, format="json")
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+@pytest.mark.django_db
+def test_update_assign_note_not_exist(admin_client):
+    data = {"title": "some note title", "content": "some test content"}
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+    role = Role.objects.create(label="test", permissions=["view"])
+
+    NotePermission.objects.create(user=user, note=note, role=role)
+
+    url = reverse("assign-note-permission")
+    payload = {"user": user.id, "note": 123, "role": role.id}
+
+    response = admin_client.post(url, payload, format="json")
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+@pytest.mark.django_db
+def test_delete_assign_role(admin_client):
+    data = {"title": "some note title", "content": "some test content"}
+    user = User.objects.create_user(username="test1", password="test1password123")
+    note = Note.objects.create(**data, author=user)
+    role = Role.objects.create(label="test", permissions=["view"])
+
+    NotePermission.objects.create(user=user, note=note, role=role)
+
+    url = reverse("assign-note-permission")
+    payload = {"user": user.id, "note": note.id, "role": role.id}
+
+    response = admin_client.delete(url, payload, format="json")
+
+    assert response.status_code == status.HTTP_200_OK
+    assert not NotePermission.objects.all()

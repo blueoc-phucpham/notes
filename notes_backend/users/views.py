@@ -23,14 +23,6 @@ class RoleViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSignUpSerializer
-
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
-
-
 class UserAssignSupport(GenericAPIView):
     """A view to support searching users by username"""
 
@@ -84,7 +76,7 @@ class UserEmailVerificationView(APIView):
         db_token = get_object_or_404(SignupToken, token=token)
         db_token.user.is_active = True
         db_token.user.save()
-        # db_token.delete()  # one time token
+        db_token.delete()  # one time token
 
         serializer = UserVerificationSerializer(db_token)
 

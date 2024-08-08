@@ -4,6 +4,10 @@ from core.models import NotePermission
 
 
 class CustomNotePermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        # Check if the user is authenticated
+        return request.user.is_authenticated
+
     def has_object_permission(self, request, view, obj):
         # Superusers can do anything
         if request.user.is_superuser:

@@ -14,6 +14,18 @@ from users.models import SignupToken, User
 @pytest.fixture
 def admin_client():
     user = User.objects.create_superuser(
+        username="testuser1", email="testuser@yop.com", password="js.sj"
+    )
+    client = APIClient()
+    refresh = RefreshToken.for_user(user)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+
+    return client
+
+
+@pytest.fixture
+def api_client():
+    user = User.objects.create_user(
         username="testuser", email="testuser@yop.com", password="js.sj"
     )
     client = APIClient()
@@ -269,3 +281,18 @@ def test_unauthenticated_user_role_detail_api_401(client):
 
     response = client.delete(url)
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_user_visit_profile(api_client):
+    url = reverse("user-me")
+    response = api_client.get(url)
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["username"] == "testuser"
+
+
+@pytest.mark.django_db
+def test_user_assign_support(admin_client):
+    url = reverse("user-search")
+    response = admin_client.get(url)
+    assert response.status_code == status.HTTP_200_OK

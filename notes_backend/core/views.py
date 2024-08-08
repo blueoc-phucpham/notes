@@ -27,6 +27,9 @@ class NoteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
 
+        if not user.is_authenticated:
+            return Note.objects.none()
+
         if user.is_superuser:
             return Note.objects.all()
 
