@@ -39,7 +39,7 @@ class GeneralSettings(BaseSettings):
     DEFAULT_AUTO_FIELD: str = "django.db.models.BigAutoField"
     DATABASES: DatabaseSettings = DatabaseSettings()
 
-    ALLOWED_HOSTS: List[str] = ["127.0.0.1"]
+    ALLOWED_HOSTS: List[str] = ["*"]
     CORS_ALLOW_ALL_ORIGINS: bool = False
     ROOT_URLCONF: str = "notes.urls"
     WSGI_APPLICATION: str = "notes.wsgi.application"

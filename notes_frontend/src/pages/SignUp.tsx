@@ -125,7 +125,7 @@ export default function SignUp() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password1" {...field} />
+                      <Input type="password" {...field} />
                     </FormControl>
                     <FormDescription>
                       Enter your account password
@@ -141,7 +141,7 @@ export default function SignUp() {
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input type="password2" {...field} />
+                      <Input type="password" {...field} />
                     </FormControl>
                     <FormDescription>
                       Enter your account password (again)
