@@ -16,7 +16,7 @@ export default function NotFound() {
           className="scroll-m-20 font-medium tracking-tight flex justify-center items-center gap-2 hover:underline"
           to={"/"}
         >
-          <MoveRightIcon></MoveRightIcon>
+          <MoveRightIcon data-testid="move-right-icon"></MoveRightIcon>
           <span>Go to Home Page</span>
         </Link>
       </div>
