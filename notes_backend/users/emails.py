@@ -1,16 +1,14 @@
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from django.urls import reverse
 from notes.settings import settings
 
 
 def send_signup_email(user) -> bool:
-    path = reverse("email-verification", args=(user.token.token,))
     context = {
         "app_name": settings.APP_NAME,
         "username": user.username,
-        "verification_link": f"{settings.BACKEND_HOST}{path}",
-        "app_host": settings.BACKEND_HOST,
+        "verification_link": f"{settings.FRONTEND_HOST}/auth/email-verification/{user.token.token}",
+        "app_host": settings.FRONTEND_HOST,
     }
 
     subject = f"Verify Your { settings.APP_NAME } Account"

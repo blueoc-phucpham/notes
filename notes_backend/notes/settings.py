@@ -39,7 +39,7 @@ class GeneralSettings(BaseSettings):
     DEFAULT_AUTO_FIELD: str = "django.db.models.BigAutoField"
     DATABASES: DatabaseSettings = DatabaseSettings()
 
-    ALLOWED_HOSTS: List[str] = []
+    ALLOWED_HOSTS: List[str] = ["127.0.0.1"]
     CORS_ALLOW_ALL_ORIGINS: bool = False
     ROOT_URLCONF: str = "notes.urls"
     WSGI_APPLICATION: str = "notes.wsgi.application"
@@ -103,10 +103,15 @@ class GeneralSettings(BaseSettings):
         # OTHER SETTINGS
     }
 
+    CORS_ALLOWED_ORIGINS: List[str] = ["http://127.0.0.1:3000"]
+
     AUTH_USER_MODEL: str = "users.User"
 
     APP_NAME: str = "Note"
     BACKEND_HOST: AnyHttpUrl | str = "http://localhost:8000"
+    FRONTEND_HOST: AnyHttpUrl | str = "http://localhost:3000"
+
+    ADMIN_PASSWORD: str
 
     @model_validator(mode="after")
     def patch_setting_if_debug(self) -> Self:

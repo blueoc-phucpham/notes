@@ -8,7 +8,6 @@ djangorestframework = "*"
 markdown = "*"
 pydjantic = "*"
 psycopg = {extras = ["binary"], version = "*"}
-pytest-django = "*"
 djangorestframework-simplejwt = "*"
 uvicorn = "*"
 drf-spectacular = "*"
@@ -19,6 +18,7 @@ django-cors-headers = "*"
 pytest = "*"
 pre-commit = "*"
 pytest-cov = "*"
+pytest-django = "*"
 
 [requires]
 python_version = "3.11"
