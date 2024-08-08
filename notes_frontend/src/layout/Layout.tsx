@@ -34,17 +34,13 @@ export default function Layout() {
         )}
         <div className="flex-grow"></div>
         {!isAuthenticated && (
-          <div>
-            <div>
+          <div className="flex gap-2">
               <Button variant={"secondary"}>
                 <Link to="/auth/login">Login</Link>
               </Button>
-            </div>
-            <div>
               <Button variant={"default"}>
                 <Link to="/auth/sign-up">Sign Up</Link>
               </Button>
-            </div>
           </div>
         )}
         {user?.is_superuser && (

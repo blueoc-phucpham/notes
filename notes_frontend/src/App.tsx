@@ -17,6 +17,7 @@ import RolePage from "./admin/RolePage";
 import AuthLayout from "./layout/AuthLayout";
 import Shared from "./pages/Shared";
 import AssignPermission from "./pages/AssignPermission";
+import CheckEmail from "./pages/CheckEmail";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,10 @@ export default function App() {
                   <Shared />
                 </RequireAuth>
               }
+            />
+            <Route
+              path="/check-email/"
+              element={<CheckEmail />}
             />
             <Route
               path="/email-verification/:token"

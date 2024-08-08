@@ -22,7 +22,7 @@ import { useSignUpMutation } from "@/hooks/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldPath, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 const schema = z
@@ -53,23 +53,24 @@ export default function SignUp() {
     },
   });
   const { mutation, error } = useSignUpMutation();
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (error != null) {
-        (Object.keys(error) as Array<keyof SignUpSchema>).forEach((key) => {
-          if (Array.isArray(error[key]) && error[key].length > 0) {
-            form.setError(key as FieldPath<SignUpSchema>, {
-              type: "manual",
-              message: error[key][0],
-            });
-          }
-        });
-      } 
+      (Object.keys(error) as Array<keyof SignUpSchema>).forEach((key) => {
+        if (Array.isArray(error[key]) && error[key].length > 0) {
+          form.setError(key as FieldPath<SignUpSchema>, {
+            type: "manual",
+            message: error[key][0],
+          });
+        }
+      });
+    }
   }, [error, form]);
 
   function onSubmit(values: SignUpValues) {
     mutation.mutate(values);
+    navigate("/check-email/");
   }
 
   return (
