@@ -27,6 +27,27 @@
 - **DB:** Postgres 16
 - **Deployment**: Docker/Caddy
 
+### Technical Details
+
+**Backend**
+
+- Python 3.11.8
+- Django 5.0 with Django rest framework 3.15.2
+- Postgres 16
+- JWT authentication with djangorestframework-simplejwt
+- CORS protection with django-cors-headers
+- Argon2 password hashing 
+- HTTPS for transmiting with Caddy 2
+
+**Frontend**
+
+- ReactJS for UI
+- Tailwindcss/ShadcUI for styling
+- React-hook-form for form handling
+- React-Query form manage async state
+- Axios for http client
+
+
 
 ### Database schema
 
