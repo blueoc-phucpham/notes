@@ -50,22 +50,7 @@ We welcome contributions to Notes! This document provides guidelines for contrib
 3. Ensure all tests pass
 4. Commit your changes with a clear commit message
 
-## Submitting a Pull Request
 
-1. Push your changes to your fork
-2. Submit a pull request to the main repository
-3. Describe your changes and link any related issues
+# Deployment
 
-## Code Review
-
-- All submissions require review
-- We may suggest changes or improvements
-- Ensure your code follows the project's style guide
-
-## Reporting Issues
-
-- Use the GitHub issue tracker
-- Provide a clear description of the issue
-- Include steps to reproduce, if applicable
-
-Thank you for contributing to Notes
+Comming soon if I have access to server
