@@ -25,9 +25,11 @@ export default defineConfig({
       reporter: ["text", "json", "html"],
       exclude: [
         "node_modules/",
+        "dist/*",
         "src/test/",
+        "src/admin/",
         "src/api/",
-        "src/components/ui",
+        "src/components/",
         "src/declarations.d.ts",
         "src/vite-env.d.ts",
         ".eslintrc.cjs",

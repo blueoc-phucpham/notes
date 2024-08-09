@@ -30,7 +30,7 @@ class UserAssignSupport(GenericAPIView):
     serializer_class = UserSearchSerializer
 
     def get(self, request):
-        users = User.objects.all()
+        users = User.objects.filter(is_active=True).all()
 
         serializer = self.get_serializer(users, many=True)
         return Response(
