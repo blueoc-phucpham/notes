@@ -103,7 +103,7 @@ class GeneralSettings(BaseSettings):
         # OTHER SETTINGS
     }
 
-    CORS_ALLOWED_ORIGINS: List[str] = ["http://localhost:3000"]
+    CORS_ALLOWED_ORIGINS: List[str] = ["http://localhost:3000", "https://localhost"]
 
     AUTH_USER_MODEL: str = "users.User"
 

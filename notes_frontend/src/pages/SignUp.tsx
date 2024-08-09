@@ -69,8 +69,11 @@ export default function SignUp() {
   }, [error, form]);
 
   function onSubmit(values: SignUpValues) {
-    mutation.mutate(values);
-    navigate("/check-email/");
+    mutation.mutate(values, {
+      onSuccess: () => {
+        navigate("/check-email/");
+      },
+    });
   }
 
   return (
